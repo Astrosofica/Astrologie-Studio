@@ -1,0 +1,107 @@
+/* 20-wiel.css
+
+   Het wiel, de standkeuze, de tijd- en leeftijdsstapper.
+
+   De volgorde van deze bestanden is de volgorde van de cascade en mag niet veranderen; binnen een
+   bestand staat niets door elkaar. */
+
+  /* Het wiel schaalt mee met het venster in plaats van een vaste 660 px: op 1440x900 is het
+     groter dan eerst, op een 125%-scherm (1152 px) kleiner, en in beide gevallen past het.
+     Het is SVG, dus het kan zonder kwaliteitsverlies. */
+  .wielvak { flex: 1 1 auto; min-width: 0; min-height: 0; max-width: 100%;
+             display: flex; align-items: center; justify-content: center;
+             border: 0; background: none; padding: 0; position: relative; }
+  /* Het wiel vult het vak en houdt zijn vierkant. De tekening heeft geen
+     `preserveAspectRatio`, dus die staat op `xMidYMid meet`: binnen een rechthoekig vak blijft de
+     cirkel rond en is er alleen lege ruimte boven en onder. Dat is precies wat we willen:
+     `aspect-ratio: 1 / 1` op de SVG zou het *vak* vierkant houden en daarmee een bovengrens op de
+     tekening leggen (max 1000 px, de eigen maat). */
+  .wielvak svg { width: 100%; height: 100%; max-width: 100%; max-height: 100%; display: block; }
+  /* De schakelaar naar de bi-wheel-stand staat in het tab zelf, met een
+     z-index in de lege rechterbovenhoek van het wiel. Hij hangt boven de tekening in de hoek die de
+     cirkel leeg laat. Hij staat ín het wielvak, dus elke keer dat het vak opnieuw gevuld wordt zet
+     `zetWielSchakel()` hem terug - `innerHTML = ...` gooit hem anders weg. */
+  /* De standkeuze van het hoofd wiel. Tot vandaag een vinkje "bi-wheel"; met de
+     progressies erbij zijn het drie standen en in jaar 3 vier. Gemeten op 1097 x 617 (1920 x 1080
+     bij 175 %): drie knoppen gestapeld (82 x 74) houden 10 px lucht tot de ring, vier (82 x 100)
+     raken hem met 12 px, en een keuzelijst van 120 x 22 houdt 42 px lucht. Daarom een pull-down:
+     hij groeit naar vier of vijf standen zonder dat er iets aan de geometrie verandert. */
+  .wielschakel { position: absolute; top: 4px; right: 4px; z-index: 3; height: 22px; padding: 0 4px;
+      font-family: "Segoe UI", Selawik, sans-serif; font-size: 12px; color: #333; background: #fff;
+      border: 1px solid #c9c9c9; border-radius: 3px; cursor: pointer; }
+  .wielschakel:hover { background: #f3f3f1; }
+  .wielschakel[hidden] { display: none; }
+  .wielschakel.aan { color: var(--accent); border-color: var(--accent); }
+  /* De tekening in een eigen laag, zodat de bediening blijft staan. Vult `wielTeken()` het hele vak
+     opnieuw (`innerHTML = svg`), dan verdwijnt alles wat er verder in staat: de standkeuze wordt door
+     `zetWielSchakel()` teruggezet, maar een veld met focus verliest bij elke toetsaanslag zijn focus.
+     Daarom is er één kind dat de tekening draagt. */
+  .wielbeeld { flex: 1 1 auto; min-width: 0; min-height: 0; width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center; }
+  /* De datumstapper bij het bi-wheel: onder de standkeuze, in dezelfde lege hoek van de
+     cirkel. Vijf segmenten die je met de pijltjes ophoogt (uur, dag, maand, jaar) en met de cijfers
+     overschrijft; het actieve segment licht op. UT, want een transitmoment is een berekend ogenblik en
+     geen burgerklok. */
+  .wielmoment { position: absolute; top: 30px; right: 4px; z-index: 3; height: 22px;
+      display: flex; align-items: center; gap: 0; padding: 0 4px;
+      font-family: "Segoe UI", Selawik, sans-serif; font-size: 12px; color: #333;
+      background: #fff; border: 1px solid #c9c9c9; border-radius: 3px; cursor: text;
+      white-space: nowrap; user-select: none; }
+  .wielmoment[hidden] { display: none; }
+  .wielmoment:focus { outline: none; border-color: var(--accent); }
+  .wielmoment .wm-seg { padding: 0 1px; border-radius: 2px; font-variant-numeric: tabular-nums; }
+  .wielmoment .wm-seg.actief { background: var(--accent-zwak, #e8eef3); }
+  .wielmoment .wm-streep { padding: 0; color: #767676; }
+  .wielmoment .wm-tijd { margin-left: 5px; }
+  .wielmoment .wm-ut { margin-left: 4px; color: #999; font-size: 11px; }
+  /* Het leeftijdsveld van de progressiestand: dezelfde doos, twee delen en een eenheid ernaast. */
+  .wielmoment .wl-eenheid { margin: 0 3px 0 2px; color: #999; font-size: 11px; }
+  .wielmoment .wl-datum { margin-left: 4px; color: #767676; font-size: 11px; }
+  /* De tijdvakknoppen van de progressies: de gekozen stand is te zien, net als bij de standknoppen. */
+  .tr-regel button.pr-jaar.aan, .tr-regel button.tr-jaar.aan {
+      background: var(--accent-zwak, #e8eef3); border-color: var(--accent); }
+  /* De schakelaar waar het tijdvak begint, op de regel van de lengteknoppen en ervoor: hij hoort bij
+     die knoppen en staat dus niet in een leeg stuk van het formulier. Twee knoppen als één segment,
+     want het is één keuze met twee standen. */
+  .tr-start { display: inline-flex; align-items: baseline; gap: 0; margin-right: 8px; }
+  .tr-startlabel { font-size: 11px; color: #666; margin-right: 5px; }
+  .tr-startknop { height: 18px; padding: 0 8px; font: inherit; font-size: 11px; line-height: 16px;
+      border: 1px solid #adadad; background: linear-gradient(#fdfdfd, #f0f0f0); color: #333;
+      cursor: pointer; border-radius: 0; }
+  .tr-startknop:first-of-type { border-radius: 2px 0 0 2px; }
+  .tr-startknop:last-of-type { border-radius: 0 2px 2px 0; border-left: 0; }
+  .tr-startknop.aan { background: var(--accent-zwak, #e8eef3); border-color: var(--accent);
+      font-weight: 600; }
+  .tr-startknop:focus-visible { outline: none; border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-ring); }
+  /* De zichtbare stappers maken het stappen zichtbaar. Ze stappen het **gemarkeerde** deel, net als
+     de pijltjes: zonder deze twee
+     knoppen vertelt niets in het veld dat je kunt stappen, en dan leest het als een etiket. */
+  .wielmoment .wm-stap { width: 15px; height: 16px; padding: 0; margin-left: 3px; font-family: inherit;
+      font-size: 13px; line-height: 1; color: #444; background: #f7f7f5; border: 1px solid #d8d8d8;
+      border-radius: 2px; cursor: pointer; }
+  .wielmoment .wm-stap + .wm-stap { margin-left: 1px; }
+  .wielmoment .wm-stap:hover { background: #ececea; }
+  .wielmoment .wm-nu { margin-left: 6px; padding: 0 4px; height: 16px; font: inherit; font-size: 11px;
+      color: var(--accent); background: none; border: 1px solid #d8d8d8; border-radius: 2px;
+      cursor: pointer; }
+  .wielmoment .wm-nu:hover { background: #f3f3f1; }
+  /* De Wiel-tab: het wiel links, de gegevens en de bewaarde kaarten in een kolom ernaast.
+     Rechts blijft anders ± 375 px leeg (formulier 330 + wiel 660) en valt het gegevensblok onder de
+     vouw (gemeten op 1440x900: gegevens beginnen op 789 px bij 900).
+     De kaartenlijst houdt een vaste hoogte zodat er niets verspringt als er een kaart bij komt
+     of af gaat: 262 (gegevens) + 12 + 380 = 654, precies de hoogte van het wiel (656). */
+  /* De rij van een tab: de inhoud links, de kolom met gegevens en bewaarde kaarten rechts. Die
+     kolom hoort bij de kaart en niet bij één tab, dus hij verhuist mee naar de actieve tab
+     (zie `zetTab`). Eén element, geen tweede lijst om synchroon te houden. */
+  /* Geen wrap: het wiel krimpt mee in plaats van onder de kolom te zakken. Onder elkaar zetten is de
+     noodoplossing van het web; in een venster hoort de tekening mee te schalen. */
+  .kolomrij { display: flex; gap: 14px; align-items: stretch; flex-wrap: nowrap; flex: 1; min-height: 0; }
+  .kolomrij > .paneel:first-child:not(.wielvak) { flex: 1 1 600px; min-width: 0; }
+  .zijkolom { flex: 0 0 345px; min-width: 0; display: flex; flex-direction: column; gap: 10px;
+              min-height: 0; overflow: auto; }
+  .geen-aspecten #laag-aspecten { display: none; }
+  /* De tekentint hangt niet aan het aspectvinkje: die gaat alleen op de A4-afdruk uit (en in de
+     afdruk zelf via @media print). Zou hij aan `.geen-aspecten` hangen, dan verdwijnen de
+     elementkleuren mee zodra je de aspectlijnen uitzet. */
+  .geen-tint #laag-zodiak-tint { display: none; }

@@ -1,0 +1,33 @@
+{
+  "id": "opslag",
+  "naam": "Bewaren - een bestand per kaart",
+  "jaar": 1,
+  "aan": true,
+  "bron": [
+    {
+      "soort": "besluit",
+      "titel": "besluit T21"
+    }
+  ],
+  "invoer": {
+    "kaart": true
+  },
+  "rekent": [],
+  "tekent": [],
+  "duidt": [],
+  "conventies": {
+    "map": "~/astrologie-kaarten (in te stellen)",
+    "vorm": "een JSON-bestand per kaart, plus index.json",
+    "geen": [
+      "databank",
+      "accounts",
+      "inlog",
+      "internet"
+    ]
+  },
+  "ijking": {
+    "tegen": "n.v.t.",
+    "gemeten": "schrijven en teruglezen werkt; de map is met de hand te lezen en te kopieren",
+    "tolerantie": "n.v.t."
+  }
+}

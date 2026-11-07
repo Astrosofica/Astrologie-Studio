@@ -1,0 +1,18 @@
+{
+  "profiel": "jaar1",
+  "jaar": 1,
+  "naam": "Jaar 1 - de bouwstenen",
+  "toelichting": "Het jaarprofiel zet de basis aan en de eerste twee aanvullingen uit. Een techniek toevoegen is een bestand toevoegen plus een regel hier (besluit T2); deze regel is de schakelaar.",
+  "technieken": [
+    { "id": "radix", "aan": true },
+    { "id": "aspecten", "aan": true },
+    { "id": "wiel", "aan": true },
+    { "id": "afdruk", "aan": true },
+    { "id": "opslag", "aan": true },
+    { "id": "element-kruis", "aan": true },
+    { "id": "heerschappen", "aan": true }
+  ],
+  "basis": ["radix", "aspecten", "wiel", "afdruk", "opslag"],
+  "aanvullingen": ["element-kruis", "heerschappen"],
+  "let_op": "De schil leest dit bestand en laat alleen de technieken met 'aan: true' zien. De twee aanvullingen staan aan: de element- en kruisverdeling volgens de afdruk van een commercieel programma en de heerschappen volgens het moderne schema."
+}

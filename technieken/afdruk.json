@@ -1,0 +1,37 @@
+{
+  "id": "afdruk",
+  "naam": "De afdruk - een A4-pagina",
+  "jaar": 1,
+  "aan": true,
+  "bron": [
+    {
+      "soort": "afdrukken",
+      "titel": "de afdruk van een commercieel programma (19-09-2026) en die van een tweede (24-07-2023)"
+    }
+  ],
+  "invoer": {
+    "kaart": true,
+    "opties": {
+      "papier": "A4"
+    }
+  },
+  "rekent": [],
+  "tekent": [
+    "gegevensblok-linksboven",
+    "wiel-rechtsboven",
+    "aspectmatrix-onder",
+    "ruimte-voor-eigen-selectie"
+  ],
+  "duidt": [],
+  "conventies": {
+    "papier": "A4 (de beide prints zijn Letter)",
+    "geen-aspectlijnen": true,
+    "matrix": "driehoekig, per cel het aspectglyph plus de orb met S of A",
+    "puntenlijst": "Zon t/m Pluto, Noordknoop, dagpars; Chiron alleen als optie (B7)"
+  },
+  "ijking": {
+    "tegen": "de indeling van de afdruk van een commercieel programma",
+    "gemeten": "nagemaakt: gegevensblok linksboven, wiel rechtsboven, matrix eronder",
+    "tolerantie": "n.v.t. (vormgeving)"
+  }
+}

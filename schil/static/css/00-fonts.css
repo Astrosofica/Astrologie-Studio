@@ -1,0 +1,64 @@
+/* 00-fonts.css
+
+   De twee fonts, de kleuren en de basis van het scherm.
+
+   De volgorde van deze bestanden is de volgorde van de cascade en mag niet veranderen; binnen een
+   bestand staat niets door elkaar. */
+
+  /* Het eigen font (subset van DejaVu Sans; besluit T15): de astrologie-glyphs, de
+     cijfers van de graden en minuten én de letters van dit scherm. Gebouwd met data/maak-font.py.
+     In de SVG gaat hetzelfde bestand als data-URI mee, zodat een kaart overal hetzelfde leest —
+     ook in een los bestand of in een afdruk. */
+  @font-face {
+    font-family: "Astro Sans";
+    src: url("/static/astro-sans.ttf") format("truetype");
+    font-weight: normal; font-style: normal; font-display: block;
+  }
+  /* Selawik is het open font van Microsoft (MIT) met dezelfde maten als Segoe UI. Op een Windows-pc
+     wint Segoe UI hierboven; elders — en in de testomgeving — valt het scherm terug op Selawik,
+     zodat het er overal hetzelfde uitziet en de maten kloppen. */
+  @font-face {
+    font-family: "Selawik";
+    src: url("/static/selawk.ttf") format("truetype");
+    font-weight: 400; font-style: normal; font-display: block;
+  }
+  @font-face {
+    font-family: "Selawik";
+    src: url("/static/selawksb.ttf") format("truetype");
+    font-weight: 600; font-style: normal; font-display: block;
+  }
+  :root {
+    /* Het accent: wit op de knop haalt hier 5,48:1, ruim boven de AA-grens van 4,5. Eén tint lichter
+       (#7c968a) haalt 3,19:1 en zakt daarmee onder AA — vandaar deze tint.
+       De afgeleiden hebben een naam die zegt wat ze DOEN, niet hoe ze eruitzien. Zo kan een volgende
+       ronde niet opnieuw drie bijna gelijke groenen laten ontstaan (wiki KLEUR-SNOEI.md: 19 waarden
+       gemeten, 12 echte groenen teruggebracht tot deze acht rollen). Elke waarde is met de hand
+       gekozen op tint 155-162 graden: de donkere stappen zijn tekst, de lichte zijn vlakken. Ze zijn
+       bewust niet met color-mix() uit de basis berekend — dan is geen enkele stap meer na te meten en
+       verandert de A4-afdruk mee met het scherm. */
+    --lijn: #333; --tekst: #111; --zacht: #f4f4f2; --rood: #a04e58;
+    --accent: #556f61;        /* vlak van een primaire knop, koppen, accentregel, statusbalk, vinkje */
+    --accent-diep: #3c6b5c;   /* de links in de tab Over: een tint dieper, altijd onderstreept */
+    --accent-ring: #cfdcd5;   /* de focusring om een veld */
+    --accent-band: #d7e4dc;   /* de aangeklikte rij in een dialoogtabel */
+    --accent-vlak: #eef3f0;   /* hover in de keuzelijst en in een dialoogtabel */
+    --accent-zwak: #e3ebe6;   /* vlak van een werkbalkknop die "aan" staat */
+    /* Het uitlegvak is een lichtgroen vlak dat zich van het paneel onderscheidt (ΔE00 6,06) met een
+       rand die je ziet (2,21:1). Wit met een rand van 1,30:1 is op een helder scherm wit op wit.
+       De tekst is #333 erop: 11,1:1. */
+    --accent-lijn: #8fa99b;   /* de rand van het uitlegvak dat meeschuift */
+    --accent-teken: #b6c9bd;  /* de rand van het cirkeltje om het vraagteken */
+  }
+  * { box-sizing: border-box; }
+  /* Twee fonts, elk met een taak: Segoe UI (via Selawik) voor de bediening,
+     de koppen en de tekstkolommen — dat font heeft écht 400 en 600, dus een kop kan zwaarder zonder
+     groter te worden. Astro Sans blijft voor de glyphs en de zodiacstanden; daar is het voor gemaakt
+     en daar kloppen de maten van graad, teken en minuut (`.pos`, `.glyf`). */
+  body { margin: 0; font: 13px/1.45 "Segoe UI", "Selawik", "DejaVu Sans", sans-serif;
+         color: var(--tekst); background: #fbfbfa; }
+  /* Buiten Windows bestaat "Segoe UI" niet, maar fontconfig lost die naam dan op naar het
+     systeemfont in plaats van door te vallen naar de volgende in de lijst — dan staat het scherm
+     in DejaVu (breder, zwaarder) terwijl Selawik geladen is. Op een niet-Windows-machine zet de
+     JS daarom deze klasse: dan staat Selawik vooraan en ziet het scherm er hetzelfde uit. */
+  html.niet-windows body, html.niet-windows button, html.niet-windows input,
+  html.niet-windows select { font-family: "Selawik", "DejaVu Sans", sans-serif; }

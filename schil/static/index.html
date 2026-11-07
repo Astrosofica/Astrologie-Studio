@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>Astrologie Studio - cursusjaar 1</title>
+<!-- Het pictogram van het venster: hetzelfde wiel als op de .exe (25 okt 2026). Zonder deze regel vraagt
+     de browser om /favicon.ico en staat er een 404 in de console; de schil levert die route ook. -->
+<link rel="icon" href="/static/favicon.ico" sizes="any">
+<!-- De opmaak staat sinds 5 november 2026 in css/; de volgorde is de volgorde van de cascade
+     en mag niet veranderen. -->
+<link rel="stylesheet" href="/static/css/00-fonts.css">
+<link rel="stylesheet" href="/static/css/10-scherm.css">
+<link rel="stylesheet" href="/static/css/20-wiel.css">
+<link rel="stylesheet" href="/static/css/30-tabellen.css">
+<link rel="stylesheet" href="/static/css/40-afdruk.css">
+<link rel="stylesheet" href="/static/css/50-technieken.css">
+</head>
+<body>
+<!-- Het venster (20 okt 2026). De titelbalk is van Windows zelf; hieronder de menubalk en de
+     werkbalk. Elke regel klikt het echte element aan dat de handeling al doet (zie `doet()` in de JS):
+     er staat geen knop in die nog moet komen. Wat er niet is, staat er niet. -->
+<div class="menubalk" id="menubalk">
+  <button type="button" class="m" data-menu="bestand">Bestand</button>
+  <button type="button" class="m" data-menu="beeld">Beeld</button>
+  <button type="button" class="m" data-menu="kaart">Horoscoop</button>
+  <button type="button" class="m" data-menu="extra">Extra</button>
+  <button type="button" class="m" data-menu="help">Help</button>
+  <span class="jaar" id="kop-sub">cursusjaar 1</span>
+
+  <div class="keuzelijst" id="menu-bestand">
+    <button type="button" data-doet="nieuw">Nieuw</button>
+    <button type="button" data-doet="openen">Horoscopen…</button>
+    <hr>
+    <button type="button" data-doet="bewaar">Bewaren<span class="snel">Ctrl+S</span></button>
+    <button type="button" data-doet="tab:afdruk">Afdrukvoorbeeld</button>
+    <!-- Het wiel als PNG, voor een verslag in Word (3 nov 2026). Wat er op dat moment staat wordt
+         uitgevoerd: het enkele wiel als die stand open is, de bi-stand met de transits als die open is.
+         Alleen het wiel, niet het A4-blad - dat gaat via Afdrukken. -->
+    <button type="button" data-doet="bewaar-png">Wiel als afbeelding opslaan…</button>
+    <hr>
+    <button type="button" data-doet="print">Afdrukken…<span class="snel">Ctrl+P</span></button>
+    <!-- De lijst als vel papier (3 nov 2026). Een eigen ingang en geen stand van `Afdrukken…`:
+         dat print het A4-wiel en moet dat blijven doen. Wat hier op papier komt is precies de lijst
+         zoals de astroloog hem heeft samengesteld - zelfde tijdvak, zelfde planeten, zelfde aspecten,
+         zelfde indeling. -->
+    <button type="button" data-doet="print-lijst">Transitlijst afdrukken…</button>
+    <button type="button" data-doet="print-lijst-progressies">Progressielijst afdrukken…</button>
+    <hr>
+    <button type="button" data-doet="afsluiten">Afsluiten<span class="snel">Ctrl+Q</span></button>
+  </div>
+  <div class="keuzelijst" id="menu-beeld">
+    <button type="button" data-doet="vinkje:toon-aspecten"><span>Aspectlijnen in het wiel</span><span class="snel" data-vink>✓</span></button>
+    <!-- Chiron hoort bij jaar 2 (besluit 19 okt 2026): berekenen, standaard verborgen, dit vinkje om
+         hem te tonen. Staat de techniek niet in het jaarprofiel, dan is deze regel er ook niet
+         (`laadProfiel()` zet de klasse `weg`). -->
+    <button type="button" data-doet="vinkje:toon-chiron" id="menu-chiron" class="weg"><span>Chiron tonen</span><span class="snel" data-vink></span></button>
+    <hr>
+    <button type="button" data-doet="weergave:100"><span>Weergave 100%</span><span class="snel" data-vink-weergave="100">✓</span></button>
+    <button type="button" data-doet="weergave:110"><span>Weergave 110%</span><span class="snel" data-vink-weergave="110">✓</span></button>
+    <button type="button" data-doet="weergave:125"><span>Weergave 125%</span><span class="snel" data-vink-weergave="125">✓</span></button>
+    <button type="button" data-doet="weergave:150"><span>Weergave 150%</span><span class="snel" data-vink-weergave="150">✓</span></button>
+  </div>
+  <div class="keuzelijst" id="menu-kaart">
+    <button type="button" data-doet="reken">Berekenen<span class="snel">F9</span></button>
+    <button type="button" data-doet="nu">Horoscoop van dit moment<span class="snel">F5</span></button>
+    <!-- De solaar vraagt twee dingen die een gewone horoscoop niet vraagt - een jaar en een plaats -
+         en opent daarvoor een eigen venster (1 nov 2026). Staat de techniek niet in het
+         jaarprofiel, dan is deze regel er niet. -->
+    <button type="button" data-doet="solaar" id="menu-solaar" class="weg"><span>Solaar…</span></button>
+  </div>
+  <div class="keuzelijst" id="menu-extra">
+    <!-- Sinds T48 (1 nov 2026): de modules staan in het instellingenscherm; deze regel brengt je er
+         meteen bij, want dat is de plek waar een cursist hem zoekt. -->
+    <button type="button" data-doet="cursus">Cursusjaren…</button>
+    <button type="button" data-doet="instellingen">Instellingen…</button>
+  </div>
+  <div class="keuzelijst" id="menu-help">
+    <button type="button" data-doet="over">Over dit programma</button>
+  </div>
+</div>
+
+<div class="werkbalk">
+  <button type="button" class="wb" data-doet="nieuw" title="Een nieuwe horoscoop beginnen">
+    <svg viewBox="0 0 16 16"><path d="M3.5 1.5h6l3 3v10h-9z"/><path d="M9.5 1.5v3h3"/></svg>Nieuw</button>
+  <button type="button" class="wb" data-doet="openen" title="Alle bewaarde horoscopen">
+    <svg viewBox="0 0 16 16"><path d="M1.5 4.5h4l1.5 2h7.5v7h-13z"/><path d="M3 6.5h9"/></svg>Horoscopen</button>
+  <div class="wb-scheiding"></div>
+  <button type="button" class="wb" data-doet="bewaar" title="Bewaren (Ctrl+S)">
+    <svg viewBox="0 0 16 16"><path d="M2.5 2.5h9l2 2v9h-11z"/><path d="M5 2.5v4h6v-4"/><path d="M4.5 9.5h7v4h-7z"/></svg>Bewaren</button>
+  <div class="wb-scheiding"></div>
+  <button type="button" class="wb primair" data-doet="reken" title="Berekenen (F9)">
+    <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><circle cx="8" cy="8" r="2.4"/><path d="M8 2v3.6M8 10.4V14M2 8h3.6M10.4 8H14M3.8 3.8l2.5 2.5M9.7 9.7l2.5 2.5M12.2 3.8L9.7 6.3M6.3 9.7l-2.5 2.5"/></svg>Berekenen</button>
+  <div class="wb-scheiding"></div>
+  <button type="button" class="wb" data-doet="nu" aria-pressed="false"
+          title="De horoscoop van het hier en nu — tikt elke 20 seconden (F5)">
+    <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 4.4V8l2.6 1.6"/></svg>Nu</button>
+  <div class="wb-scheiding"></div>
+  <button type="button" class="wb aan" id="wb-aspecten" data-doet="vinkje:toon-aspecten"
+          title="Aspectlijnen in het wiel aan of uit">
+    <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5"/><path d="M3.1 3.1l9.8 9.8M12.9 3.1L3.1 12.9"/></svg>Aspectlijnen</button>
+  <div class="wb-scheiding"></div>
+  <button type="button" class="wb" data-doet="print" title="Afdrukken (Ctrl+P)">
+    <svg viewBox="0 0 16 16"><path d="M4 2.5h8v3H4z"/><path d="M2.5 5.5h11v5h-3v3h-5v-3h-3z"/></svg>Afdrukken</button>
+  <button type="button" class="wb" data-doet="instellingen" title="Instellingen">
+    <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.2"/><path d="M8 1.5v2M8 12.5v2M1.5 8h2M12.5 8h2M3.6 3.6l1.4 1.4M11 11l1.4 1.4M12.4 3.6L11 5M5 11l-1.4 1.4"/></svg>Instellingen</button>
+  <div class="wb-scheiding wb-rechts"></div>
+  <button type="button" class="wb" data-doet="afsluiten" title="Het programma afsluiten (Ctrl+Q)">
+    <svg viewBox="0 0 16 16"><path d="M8 2.3v5.4"/><path d="M4.9 4.5a4.9 4.9 0 1 0 6.2 0"/></svg>Afsluiten</button>
+</div>
+
+<div class="wrap">
+  <form class="form" id="form" autocomplete="off">
+  <div class="paneel"><h2>Horoscoopgegevens</h2>
+    <!-- Elk veld heeft een vraagteken met de uitleg (19 okt 2026). Het uitlegvak komt rechts van
+         het formulier te staan, boven het wiel, zodat het formulier zelf leesbaar blijft terwijl je
+         leest. De tekst staat in de HTML en niet in een `title`: die verschijnt pas na een seconde,
+         is niet op te maken en is met het toetsenbord niet te bereiken. -->
+    <div class="veld">
+      <label for="naam">Naam <span class="vraag" aria-hidden="true">?</span>
+        <span class="uitlegvak">De naam verschijnt boven de horoscoop. Je kunt hier vrij invullen; de naam heeft geen invloed op de berekening.</span></label>
+      <input id="naam" placeholder="naam van de persoon">
+    </div>
+    <div class="rij">
+      <div class="veld"><label for="datum">Datum <span class="vraag" aria-hidden="true">?</span>
+          <span class="uitlegvak">Vul de geboortedatum in, bijvoorbeeld 14-03-1985. Je kunt ook 14031985, 14.03.1985 of 1985-03-14 invoeren. Zodra je het veld verlaat, zet het programma de datum om naar de Nederlandse volgorde: DD-MM-JJJJ.</span></label>
+        <input id="datum" placeholder="DD-MM-JJJJ"></div>
+      <div class="veld"><label for="tijd">Tijd <span class="vraag" aria-hidden="true">?</span>
+          <span class="uitlegvak">Vul de geboortetijd in 24-uursnotatie in, bijvoorbeeld 09:30. Seconden zijn ook toegestaan: 09:30:15. Ook 9.30, 9u30 en 0930 worden herkend. Zonder opgegeven seconden wordt 00 ingevuld, dus 09:30 wordt 09:30:00.</span></label>
+        <input id="tijd" placeholder="UU:MM:SS"></div>
+    </div>
+    <div class="veld">
+      <label for="plaats">Plaats <span class="vraag" aria-hidden="true">?</span>
+        <span class="uitlegvak">Typ de eerste letters van een plaatsnaam en kies de juiste plaats uit de lijst. Het programma vult dan de coördinaten en tijdzone in. Je kunt de plaats ook zelf invoeren; vul in dat geval de coördinaten in, de tijdzone zoekt het programma er zelf bij.</span></label>
+      <input id="plaats" autocomplete="off" placeholder="typ de eerste letters">
+      <div class="plaatsen" id="plaatsen"></div>
+    </div>
+    <div class="rij">
+      <div class="veld"><label for="lat">Breedte (N) <span class="vraag" aria-hidden="true">?</span>
+          <span class="uitlegvak">De breedtegraad geeft aan hoe ver een plaats ten noorden of zuiden van de evenaar ligt. Ten noorden van de evenaar is de waarde positief, ten zuiden negatief. Voorbeelden: Utrecht 52.09° en Kaapstad −33.92°.<br><br>Je kunt decimalen met een punt of komma invoeren (51.6736 of 51,6736), of graden en minuten (51°40' N). Bij een gekozen plaats wordt dit veld automatisch ingevuld.</span></label>
+        <input id="lat" placeholder="51.6736 of 51,6736"></div>
+      <div class="veld"><label for="lon">Lengte (O) <span class="vraag" aria-hidden="true">?</span>
+          <span class="uitlegvak">De lengtegraad geeft aan hoe ver een plaats ten oosten of westen van de nulmeridiaan ligt. Ten oosten is de waarde positief, ten westen negatief. Voorbeelden: Utrecht 5.12° en New York −74,01°.<br><br>Je kunt decimalen met een punt of komma invoeren (4.2811 of 4,2811), of graden en minuten (4°16' O). Bij een gekozen plaats wordt dit veld automatisch ingevuld.</span></label>
+        <input id="lon" placeholder="4.2811 of 4°16' O"></div>
+    </div>
+    <div class="coord-dms" id="dms"></div>
+    <div class="veld">
+      <label for="tz">Tijdzone (IANA) <span class="vraag" aria-hidden="true">?</span>
+        <span class="uitlegvak">De tijdzone van de geboorteplaats. Kies je een plaats uit de lijst, dan wordt de tijdzone automatisch ingevuld. Is dit veld leeg, dan probeert het programma de tijdzone op basis van de coördinaten te bepalen.<br><br>De tijdzone bepaalt welke tijdcorrectie geldt, inclusief eventuele zomertijd. Je hoeft de tijdzone dus niet zelf te kennen als je een plaats uit de lijst kiest.</span></label>
+      <input id="tz" placeholder="Europe/Amsterdam" list="zones" autocomplete="off">
+      <!-- Alle 356 IANA-namen uit de plaatsenlijst (19 okt 2026): typen hoeft niet, kiezen mag.
+           Het script vult de zone zelf als hij leeg blijft; dit is het vangnet. -->
+      <datalist id="zones"></datalist>
+    </div>
+    <!-- De tijdkeuze in gewone taal (etappe 3, 18 okt 2026): de waarden in de API blijven
+         ""/utc/lmt, alleen wat de gebruiker leest is veranderd. Het label zei "Tijd", net als
+         het tijdveld bovenaan; nu zegt het wat de keuze doet. -->
+    <div class="veld">
+      <label for="correctie">De ingevulde tijd is <span class="vraag" aria-hidden="true">?</span>
+        <span class="uitlegvak">Geef aan welk soort tijd je hebt ingevuld; meestal is de eerste optie de juiste.<br>• <b>De geldende zonetijd van de plaats:</b> de tijd die de klok op de geboorteplaats aangaf, inclusief eventuele zomertijd.<br>• <b>De universele tijd (UT, ook bekend als GMT):</b> de internationale tijd die als referentie dient voor de tijdrekening.<br>• <b>De ware plaatselijke tijd (WPT):</b> de plaatselijke tijd, berekend op basis van de lengtegraad van de geboorteplaats.</span></label>
+      <select id="correctie"><option value="" selected>de geldende zonetijd van de plaats</option>
+        <option value="utc">de universele tijd (UT of GMT)</option>
+        <option value="lmt">de ware plaatselijke tijd (WPT)</option></select>
+    </div>
+    <div class="knoppen">
+      <button type="submit" class="hoofd">Berekenen</button>
+      <button type="button" id="bewaar">Bewaren</button>
+    </div>
+    <div class="meld" id="meld" role="status" aria-live="polite"></div>
+    <div id="kruis" style="margin-top:10px"></div>
+  </div>
+  </form>
+
+  <!-- De schakelaar voor de aspectlijnen staat sinds 28 okt 2026 niet meer in het formulier: menu Beeld
+       en de knop in de werkbalk zijn de twee deuren die de gebruiker ziet. Dit verborgen vakje is alleen
+       nog de plek waar de stand wordt bewaard, zodat `zetAspecten()`, `zetVinkjes()` en `doet("vinkje:…")`
+       één bron van waarheid houden. Aanleiding: op 175%-Windows-schaling (1097×617) was dít vak met 73 px
+       precies de ruimte die ontbrak en kreeg het formulier een scrollbalk (gemeld 28 okt 2026). -->
+  <input type="checkbox" id="toon-aspecten" checked hidden>
+  <!-- Hetzelfde patroon voor Chiron: dit vakje is de enige plek waar de stand woont, het menu-item
+       klikt het aan. Standaard uit - "berekenen, standaard verborgen" (besluit 19 okt 2026). -->
+  <input type="checkbox" id="toon-chiron" hidden>
+
+  <div class="werk">
+    <div class="tabs">
+      <button data-tab="wiel" class="actief">Wiel</button>
+      <button data-tab="overzicht">Overzicht</button>
+      <button data-tab="aspecten">Aspecten</button>
+      <button data-tab="afdruk">Afdrukvoorbeeld</button>
+    </div>
+    <div class="tab actief" id="tab-wiel">
+      <div class="vorige-kaart" id="vorige-kaart"></div>
+      <!-- Het wiel is het centrale view; de gegevens en de bewaarde kaarten staan ernaast.
+           Rechts blijft anders ± 375 px leeg (formulier 330 + wiel 660) en viel het
+           gegevensblok onder de vouw (gemeten 18 okt 2026 op 1440x900: 789 px bij 900). -->
+      <div class="kolomrij">
+        <div class="paneel wielvak" id="wielvak"></div>
+        <div class="zijkolom" id="zijkolom">
+          <div class="paneel gegevens" id="gegevens"></div>
+          <div class="paneel kaarten" id="kaartenblok">
+            <div class="kaartenkop">
+              <h2>Recente horoscopen</h2>
+            </div>
+            <div class="kaartenlijst" id="kaartenlijst"></div>
+            <button type="button" class="kaartenmeer" id="kaartenmeer">Alle horoscopen…</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tab" id="tab-overzicht">
+      <!-- De element- en kruisverdeling en de heerschappen horen bij de kaart, niet bij de
+           tekening: sinds 18 okt 2026 een eigen tab. Ze stonden onder het wiel en maakten de
+           Wiel-tab 509 px te hoog (1299 px); nu past die op één scherm (777 px). -->
+      <!-- De standen staan sinds 19 okt 2026 hier en niet meer onder het wiel: ze passen beter bij het overzicht. Ze zijn cijfers, net als de verdeling en de heerschappen; de
+           Wiel-tab is daarmee precies één scherm. Twee kolommen, want dit paneel is 660 px breed; vier
+           kolommen hadden de volle 1035 px nodig. -->
+      <div class="kolomrij"><div class="stapel" style="flex:1 1 auto; min-width:0">
+        <div class="paneel standen" id="standen"></div>
+        <div class="paneel" id="toevoegingen" style="margin-top:12px"></div>
+      </div></div>
+    </div>
+    <div class="tab" id="tab-aspecten">
+      <div class="kolomrij"><div class="paneel" id="lijstvak"></div></div>
+    </div>
+    <!-- De vijfde tab (T49, 1 nov 2026). De knop komt uit het register en bestaat alleen als de
+         techniek aanstaat; dit vak is leeg tot de knop hem vult. -->
+    <div class="tab" id="tab-transits"></div>
+    <div class="tab" id="tab-afdruk">
+      <div class="optie">Dit is hoe de horoscoop uit de printer komt. Met de knop Afdrukken hierboven (of Ctrl+P).
+        <select id="druk-schakel" class="drukschakel" hidden aria-label="Wat er op papier komt"></select></div>
+      <div id="afdruk"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Instellingen (etappe 4, 20 okt 2026): een dialoogvenster in plaats van een tab. Het is
+     hetzelfde paneel als voorheen — dezelfde velden, dezelfde plaatszoeker, dezelfde foutmarkering —
+     alleen staat het nu in een venster met een eigen titelbalk en knoppen. -->
+<div class="dialoogvlak" id="dlg-instellingen" hidden>
+  <div class="dialoog groot" role="dialog" aria-modal="true" aria-labelledby="dlg-instellingen-titel">
+    <div class="dlg-titel"><span id="dlg-instellingen-titel">Instellingen</span>
+      <button type="button" class="dlg-sluit" data-sluit aria-label="sluiten">&#10005;</button></div>
+    <div class="dlg-inhoud dlg-paneel" id="dlg-instellingen-inhoud">
+<div class="paneel instellingen cursus">
+        <h2>Cursus</h2>
+        <p class="uitleg">Jaar 1 is de basis en staat altijd aan. Vink een jaar aan om de technieken van
+          dat jaar erbij te zetten.</p>
+        <!-- Jaar 1 staat er als een **aangevinkte box die niet meebeweegt** (1 nov 2026: een box die niet meebeweegt geeft een boodschap af en is in die zin functioneel). Dezelfde vorm als de andere jaren, dus je ziet meteen: dit zijn de modules
+             en deze staat vast. De woorden "altijd aan" staan ernaast omdat een uitgegrijsde box in
+             veel programma's "geldt niet meer" betekent; hier betekent hij "kan niet uit". -->
+        <label class="jaarregel basis" for="cursus-jaar1">
+          <input type="checkbox" id="cursus-jaar1" checked disabled>
+          <span class="naam">Jaar 1</span>
+          <span class="wat">de bouwstenen: radix, aspecten, wiel, afdruk
+            <em>altijd aan, het fundament</em></span>
+        </label>
+        <label class="jaarregel" for="cursus-jaar2">
+          <input type="checkbox" id="cursus-jaar2">
+          <span class="naam">Jaar 2</span>
+          <span class="wat">Chiron, dominante aspecten, solaar, transits en progressies</span>
+        </label>
+      </div>
+      <div class="paneel instellingen">
+        <h2>Huidige locatie</h2>
+        <p class="uitleg">Deze locatie hoort bij het programma zelf: de horoscoop van dit moment wordt er
+          mee berekend. Eén keer instellen is genoeg; je kunt het hier altijd veranderen.</p>
+        <label for="inst-plaats">Plaats</label>
+        <input id="inst-plaats" autocomplete="off" placeholder="typ de eerste letters">
+        <div class="plaatsen" id="inst-plaatsen"></div>
+        <div class="rij">
+          <div><label for="inst-lat">Breedte (N)</label><input id="inst-lat"
+            placeholder="51.6736 of 51,6736"></div>
+          <div><label for="inst-lon">Lengte (O)</label><input id="inst-lon"
+            placeholder="4.2811 of 4°16' O"></div>
+        </div>
+        <div class="coord-dms" id="inst-dms"></div>
+        <label for="inst-tz">Tijdzone (IANA)</label>
+        <input id="inst-tz" placeholder="Europe/Amsterdam" list="zones" autocomplete="off">
+        <input type="hidden" id="inst-etiket">
+      </div>
+    </div>
+    <div class="dlg-voet">
+      <div class="meld" id="inst-meld"></div>
+      <div class="bron">Instellingenbestand: <span id="inst-bestand">onbekend</span></div>
+    </div>
+    <div class="dlg-knoppen">
+      <button type="button" class="hoofd" id="inst-bewaar">Opslaan</button>
+      <button type="button" data-sluit>Annuleren</button>
+    </div>
+  </div>
+</div>
+
+<!-- Over (etappe 4): dezelfde tekst als in de tab, nu in een venster. De kop boven de tekst is
+     weggevallen: de titelbalk zegt het al. -->
+<div class="dialoogvlak" id="dlg-over" hidden>
+  <div class="dialoog groot" role="dialog" aria-modal="true" aria-labelledby="dlg-over-titel">
+    <div class="dlg-titel"><span id="dlg-over-titel">Over Astrologie Studio</span>
+      <button type="button" class="dlg-sluit" data-sluit aria-label="sluiten">&#10005;</button></div>
+    <div class="dlg-inhoud dlg-paneel" id="dlg-over-inhoud">
+<div class="paneel over">
+        <p class="over-versie" id="over-versie"></p>
+        <p class="over-inleiding">Astrologie Studio is een eenvoudig astrologieprogramma voor Windows,
+          bedoeld als hulpmiddel bij het eerste jaar van de astrologiecursus van het CHTA.</p>
+        <p class="over-inleiding">Het programma biedt de basisfuncties die je in het eerste cursusjaar
+          nodig hebt. Het werkt met de tropische dierenriem, een geocentrische berekening en het
+          huizensysteem van Koch. Voor de berekeningen maakt het gebruik van Swiss Ephemeris.</p>
+        <p class="over-inleiding">Astrologie Studio werkt volledig op je eigen computer en heeft geen
+          internetverbinding nodig. Alleen als je een plaats zoekt die niet in de meegeleverde database
+          voorkomt, kun je optioneel online aanvullende gegevens opzoeken. Horoscopen worden als gewone
+          bestanden op je computer opgeslagen. Je kunt ze zelf beheren en kopiëren.</p>
+
+        <div class="over-blok">
+          <h3>Het programma en de licentie</h3>
+          <p>Astrologie Studio wordt uitgebracht onder de GNU Affero General Public License, versie 3
+            (AGPL-3.0). De volledige licentietekst is opgenomen in het bestand <code>LICENSE</code>. De
+            broncode wordt bij iedere verspreiding van het programma meegeleverd.</p>
+        </div>
+
+        <div class="over-blok">
+          <h3>De efemeriden</h3>
+          <p>Voor de astronomische berekeningen maakt het programma gebruik van Swiss Ephemeris, via de
+            Python-bibliotheek <code>pyswisseph</code>. Swiss Ephemeris is beschikbaar onder de AGPL-3.0 of
+            een afzonderlijke professionele licentie. Voor dit programma geldt de AGPL-3.0.</p>
+          <p>Meer informatie:
+            <a href="https://www.astro.com/swisseph/" target="_blank" rel="noopener">astro.com/swisseph</a></p>
+        </div>
+
+        <div class="over-blok">
+          <h3>De plaatsendatabase</h3>
+          <p>Het programma bevat een database met ruim 54.000 plaatsen. Nederland en België zijn daarin
+            uitgebreid vertegenwoordigd, tot en met kleine gehuchten. Buiten Nederland en België bevat de
+            database ruim 33.000 plaatsen wereldwijd, vanaf ongeveer 15.000 inwoners. Daarmee zijn ook
+            veel kleinere steden opgenomen, niet alleen de grote steden.</p>
+          <p>Kun je een plaats niet vinden? Dan kun je vanuit het programma optioneel online zoeken via
+            OpenStreetMap. De gevonden locatie wordt opgeslagen in een aparte tabel, zodat je deze later
+            opnieuw kunt gebruiken.</p>
+          <p>De meegeleverde database is gebaseerd op GeoNames (CC BY 4.0) en aangevuld met gegevens van
+            OpenStreetMap (ODbL).</p>
+          <p>Meer informatie:
+            <a href="https://www.geonames.org/" target="_blank" rel="noopener">geonames.org</a> en
+            <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">openstreetmap.org/copyright</a></p>
+          <p class="over-stil" id="over-plaatsen">De meegeleverde database bevat 54.158 plaatsen en is
+            samengesteld op 14 oktober 2026.</p>
+        </div>
+
+        <div class="over-blok">
+          <h3>Lettertypen en astrologische tekens</h3>
+          <p>Voor de weergave van letters, cijfers en astrologische tekens gebruikt het programma
+            <strong>Astro Sans</strong>. Dit eigen lettertype combineert de astrologische symbolen uit
+            StarfisherUni (&copy; 2008/2014 Kenneth Hirst, SIL OFL 1.1) met de letters en cijfers uit
+            Source Sans 3 (&copy; 2010&ndash;2024 Adobe, SIL OFL 1.1).</p>
+          <p>Voor de bediening en de tekst gebruikt het programma <strong>Selawik</strong> (&copy; 2015
+            Microsoft, SIL OFL 1.1). Dit vrije lettertype heeft dezelfde maatvoering als Segoe UI, het
+            standaardlettertype van Windows. De licentie staat in
+            <code>data/fonts/LICENTIE-Selawik.txt</code>.</p>
+          <p>De licenties en de volledige herkomstinformatie zijn te vinden in
+            <code>data/fonts/LICENTIE-AstroSans.txt</code>.</p>
+        </div>
+      </div>
+    </div>
+    <div class="dlg-knoppen">
+      <button type="button" class="hoofd" data-sluit>Sluiten</button>
+    </div>
+  </div>
+</div>
+
+<!-- De solaar (1 nov 2026): jaar en plaats, daarna vult hij het gewone formulier en rekent.
+     Twee velden en geen eigen scherm - de solaar is een gewone horoscoop, alleen het moment
+     wordt gezocht in plaats van ingevuld. -->
+<div class="dialoogvlak" id="dlg-solaar" hidden>
+  <div class="dialoog klein" role="dialog" aria-modal="true" aria-labelledby="dlg-solaar-titel">
+    <div class="dlg-titel"><span id="dlg-solaar-titel">Solaar</span>
+      <button type="button" class="dlg-sluit" data-sluit aria-label="sluiten">&#10005;</button></div>
+    <div class="dlg-inhoud dlg-paneel">
+      <div class="paneel solaarvenster">
+        <p class="uitleg" id="dlg-solaar-uitleg"></p>
+        <label for="solaar-jaar">Jaar</label>
+        <input id="solaar-jaar" type="number" step="1" inputmode="numeric" placeholder="2026">
+        <label for="solaar-plaats">Plaats waar je dan bent</label>
+        <input id="solaar-plaats" autocomplete="off" placeholder="typ de eerste letters">
+        <div class="plaatsen" id="solaar-plaatsen"></div>
+        <div class="rij">
+          <div><label for="solaar-lat">Breedte (N)</label><input id="solaar-lat"
+            placeholder="52.0456"></div>
+          <div><label for="solaar-lon">Lengte (O)</label><input id="solaar-lon"
+            placeholder="6.0997"></div>
+        </div>
+        <label for="solaar-zone">Tijdzone (IANA)</label>
+        <input id="solaar-zone" list="zones" autocomplete="off">
+      </div>
+    </div>
+    <div class="dlg-voet"><div class="meld" id="solaar-meld"></div></div>
+    <div class="dlg-knoppen">
+      <button type="button" class="hoofd" id="dlg-solaar-ok">Berekenen</button>
+      <button type="button" data-sluit>Annuleren</button>
+    </div>
+  </div>
+</div>
+
+<!-- Het eigen berichtvenster (etappe 4): vervangt de browserbevestiging bij verwijderen en bij
+     Nieuw met onbewaard werk. Eén venster, gevuld door `bericht()`; de knoppen zeggen Ja en Nee. -->
+<div class="dialoogvlak" id="dlg-bericht" hidden>
+  <div class="dialoog klein" role="dialog" aria-modal="true" aria-labelledby="dlg-bericht-titel">
+    <div class="dlg-titel"><span id="dlg-bericht-titel">Astrologie Studio</span>
+      <button type="button" class="dlg-sluit" data-sluit aria-label="sluiten">&#10005;</button></div>
+    <div class="dlg-inhoud"><p class="dlg-tekst" id="dlg-bericht-tekst"></p></div>
+    <div class="dlg-knoppen">
+      <button type="button" class="hoofd" id="dlg-bericht-ja">Ja</button>
+      <button type="button" id="dlg-bericht-nee" data-sluit>Nee</button>
+    </div>
+  </div>
+</div>
+
+<!-- Bestand -> Horoscopen (etappe 2, 26 okt 2026): het beheerscherm van de bewaarde horoscopen.
+     Zoeken op naam, sorteren op naam of datum via de kolomkoppen, en verwijderen per rij via
+     dezelfde functie als het kruisje in het paneel (`verwijderKaart`). Openen doet hetzelfde als
+     een klik in de kolom rechts (`openKaart`), dus er is geen tweede weg naar dezelfde kaart. -->
+<div class="dialoogvlak" id="dlg-openen" hidden>
+  <div class="dialoog sleepbaar" role="dialog" aria-modal="true" aria-labelledby="dlg-openen-titel">
+    <div class="dlg-titel"><span id="dlg-openen-titel">Horoscopen</span>
+      <button type="button" class="dlg-sluit" data-sluit aria-label="sluiten">✕</button></div>
+    <div class="dlg-inhoud">
+      <div class="dlg-zoekrij">
+        <input id="dlg-openen-zoek" type="search" placeholder="zoek op naam" autocomplete="off"
+               aria-label="zoeken op naam">
+        <span class="dlg-telling" id="dlg-openen-telling"></span>
+      </div>
+      <div class="dlg-lijst" id="dlg-openen-lijst"></div>
+    </div>
+    <div class="dlg-knoppen">
+      <button type="button" class="hoofd" id="dlg-openen-ok">Openen</button>
+      <button type="button" data-sluit>Annuleren</button>
+    </div>
+  </div>
+</div>
+
+<!-- De statusbalk van het venster. Wat waar is over de kaart en het programma (de vaste conventies van
+     jaar 1 en het cursusjaar), plus sinds 28 okt 2026 één bediening in de hoek: de weergave (besluit
+     T35, met zijn woord — een QoL-knop, geen invoer). De telling van punten en aspecten komt pas als
+     hij gelijk is aan wat de Aspecten-tab laat zien (die lijst is gefilterd: zonder knoop en pars). -->
+<div class="statusbalk" id="statusbalk">
+  <div class="cel">Koch · tropisch · geocentrisch · True Node</div>
+  <div class="cel" id="status-kaart"></div>
+  <!-- De leesregel bij het aanwijzen van een transit in de bi-stand (3 nov 2026, omdat er bij het aanwijzen van een transit niets gebeurde). Hij is leeg en onzichtbaar tot je zweeft,
+       groeit dan in de vrije ruimte links van "cursusjaar" en duwt niets opzij: die cel heeft
+       `margin-left: auto`, dus de ruimte komt uit de marge en niet uit de andere cellen. -->
+  <div class="cel hover" id="status-hover"></div>
+  <div class="cel rechts" id="status-jaar">cursusjaar 1</div>
+  <!-- De weergave, één stand per klik (QoL, besluit 28 okt 2026). Hier en niet in de werkbalk:
+       daar is op 1440 bij 150 % nog maar 102 eenheden over, en een knop in een gezoomde balk schuift
+       174 px weg onder de cursor. Rechts in deze balk schuift hij 5-10 px en blijft hij onder de hand. -->
+  <div class="cel weergaveknop" id="weergaveknop">
+    <button type="button" class="wg" id="wg-min" data-doet="weergavestap:-1"
+            aria-label="Kleiner weergeven" title="Eén stand kleiner: 150 → 125 → 110 → 100">A−</button>
+    <span id="wg-waarde">100%</span>
+    <button type="button" class="wg" id="wg-plus" data-doet="weergavestap:1"
+            aria-label="Groter weergeven" title="Eén stand groter: 100 → 110 → 125 → 150">A+</button>
+  </div>
+</div>
+
+<!-- De bediening staat sinds 5 november 2026 in js/. De bestanden delen één werkruimte en
+     worden in deze volgorde geladen; 90-start.js loopt als laatste en gebruikt de rest.
+     Zie ~/wiki/projects/astrologie-studio/INDEX-SPLITSING.md. -->
+<script src="/static/js/00-basis.js"></script>
+<script src="/static/js/10-invoer.js"></script>
+<script src="/static/js/20-kaart.js"></script>
+<script src="/static/js/25-wiel.js"></script>
+<script src="/static/js/30-transits.js"></script>
+<script src="/static/js/40-progressies.js"></script>
+<script src="/static/js/50-afdruk.js"></script>
+<script src="/static/js/60-scherm.js"></script>
+<script src="/static/js/90-start.js"></script>
+</body>
+</html>

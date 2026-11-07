@@ -1,0 +1,87 @@
+{
+  "id": "radix",
+  "naam": "Radix - een kaart berekenen",
+  "jaar": 1,
+  "les": "1 (bouwstenen)",
+  "aan": true,
+  "bron": [
+    {
+      "soort": "eigen programma",
+      "titel": "github.com/Astrosofica/Horoscoopberekening, src/Calculation (PlanetCalculator, HouseCalculator, ParsFortuna)"
+    }
+  ],
+  "invoer": {
+    "geboorte": true,
+    "moment": false,
+    "opties": {
+      "huizenstelsel": "K",
+      "tijdcorrectie": [
+        "zone",
+        "utc",
+        "lmt"
+      ],
+      "chiron": false
+    }
+  },
+  "rekent": [
+    {
+      "wat": "lichamen",
+      "welke": [
+        "Zon",
+        "Maan",
+        "Mercurius",
+        "Venus",
+        "Mars",
+        "Jupiter",
+        "Saturnus",
+        "Uranus",
+        "Neptunus",
+        "Pluto",
+        "Noordknoop"
+      ]
+    },
+    {
+      "wat": "lichamen",
+      "welke": [
+        "Chiron"
+      ],
+      "optie": true,
+      "bron": "besluit B7: Chiron alleen als optie; sinds een vakje in het formulier en een ijkpunt tegen een commercieel programma"
+    },
+    {
+      "wat": "punten",
+      "welke": [
+        "Dagpars"
+      ]
+    },
+    {
+      "wat": "huizen",
+      "stelsel": "K"
+    },
+    {
+      "wat": "hoeken",
+      "welke": [
+        "Ascendant",
+        "MC"
+      ]
+    },
+    {
+      "wat": "snelheid",
+      "doel": "retrograde"
+    }
+  ],
+  "tekent": [],
+  "duidt": [],
+  "conventies": [
+    "tropisch",
+    "geocentrisch",
+    "true node",
+    "Koch",
+    "dagpars = Asc + Maan - Zon"
+  ],
+  "ijking": {
+    "tegen": "de twee ijkprints, public_html/Wheel/wheel.php, en de Chiron-standen van een commercieel programma",
+    "gemeten": "print A 14 van 14 punten gelijk; print B 27 van 28 punten gelijk; wheel.php-planeten binnen 3,03 boogseconde; Chiron op twee momenten binnen 0,5 boogseconde van dat programma",
+    "tolerantie": "0,5 boogminuut, met afgekapte minuten (besluit T22); Chiron 0,5 boogseconde"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "id": "chiron",
+  "naam": "Chiron - de heelmeester",
+  "jaar": 2,
+  "aan": true,
+  "standaard_zichtbaar": true,
+  "module": true,
+  "standaard_verborgen": true,
+  "bron": [
+    {
+      "soort": "eigen programma",
+      "titel": "swe.CHIRON uit de efemeriden in de repo (efemeriden/seas_18.se1, de planetoïdenhoofdbestand)"
+    }
+  ],
+  "invoer": {
+    "kaart": true,
+    "opties": {
+      "chiron": true,
+      "standaard": false
+    }
+  },
+  "rekent": [
+    {
+      "wat": "lichamen",
+      "welke": [
+        "Chiron"
+      ],
+      "bron": "besluit B7: Chiron alleen als optie"
+    },
+    {
+      "wat": "punten",
+      "bij": "de puntenlijst",
+      "volgorde": "na de Noordknoop, voor de Dagpars"
+    }
+  ],
+  "tekent": [
+    "glyph in het wiel op zijn graad",
+    "regel in de standentabel",
+    "regel in het gegevensblok van de A4"
+  ],
+  "duidt": [],
+  "conventies": [
+    "geen aspecten met Chiron: de aspecten gaan tussen planeten onderling en tussen planeten en de hoeken",
+    "conjuncties met Chiron beoordeelt de cursist zelf uit de standen; die staan dus niet in de lijst"
+  ],
+  "ijking": {
+    "tegen": "de Chiron-standen van een commercieel programma op twee momenten",
+    "gemeten": "19-07-1963 15:51:26 UT: Vissen 14°28'36,3\"; 01-01-2026 00:00 UT: Ram 22°36'00,5\" - beide binnen de afronding van dat programma",
+    "tolerantie": "0,5 boogseconde"
+  }
+}

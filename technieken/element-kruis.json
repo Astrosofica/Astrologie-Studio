@@ -1,0 +1,34 @@
+{
+  "id": "element-kruis",
+  "naam": "Element- en kruisverdeling",
+  "jaar": 1,
+  "aan": true,
+  "module": true,
+  "bron": [
+    {
+      "soort": "afdruk",
+      "titel": "de afdruk van een commercieel programma - de blokken Cardinal/Fixed/Mutable en Fire/Earth/Air/Water"
+    }
+  ],
+  "invoer": {
+    "kaart": true,
+    "opties": {
+      "welke-lichamen": "zon-tot-pluto"
+    }
+  },
+  "rekent": [
+    {
+      "wat": "verdeling",
+      "over": "teken-van-het-lichaam"
+    }
+  ],
+  "tekent": [
+    "gegroepeerde-lijsten"
+  ],
+  "duidt": [],
+  "ijking": {
+    "tegen": "de afdruk van een commercieel programma, blok rechtsonder",
+    "gemeten": "alle zeven groepen gelijk - Cardinal Mercurius Venus Zon Saturnus Uranus + Asc; Fixed Maan Neptunus + MC; Mutable Mars Jupiter Pluto; Vuur Mercurius Venus Zon Mars Saturnus; Aarde Jupiter Pluto; Lucht Uranus + MC; Water Maan Neptunus + Asc",
+    "tolerantie": "n.v.t. (telling, geen afwijking mogelijk)"
+  }
+}

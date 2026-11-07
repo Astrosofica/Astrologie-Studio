@@ -1,0 +1,297 @@
+/* 50-technieken.css
+   Transits, progressies, de tabelvorm van het formulier, de momentopname.
+
+   De volgorde van deze bestanden is de volgorde van de cascade en mag niet veranderen; binnen een
+   bestand staat niets door elkaar. */
+
+/* De transits (T49): het formulier als strook boven de lijst, de momentopname ernaast.
+   De eerste techniek met eigen invoer, dus ook de eerste keer dat een tab een formulier draagt. */
+.tr-formulier { width: auto; }
+/* Na een berekening klapt het formulier in tot één regel: op 1097x617 at het anders de
+   hele hoogte op en hield de lijst 0 px over. De samenvatting zegt met welke invoer de lijst gemaakt
+   is, dus je ziet altijd waar je naar kijkt; "wijzigen" klapt hem weer open. */
+.tr-formulier.ingeklapt > h2, .tr-formulier.ingeklapt .tr-kolommen,
+.tr-formulier.ingeklapt .tr-tabel { display: none; }
+/* Zolang het formulier openstaat is de lijst niet in beeld: op 1097x617 past het samen niet (het
+   formulier is daar 329 van de 491 px) en een lijstvak van 0 px leest als een fout. Wat je ziet is
+   dus óf de invoer, óf het resultaat — en na Berekenen klapt het formulier zelf in. */
+.tr-formulier:not(.ingeklapt) ~ .tr-rij { display: none; }
+.tr-samenvatting { display: flex; align-items: center; gap: 10px; font-size: 12.5px; color: #444;
+    min-height: 26px; }
+.tr-samenvatting[hidden] { display: none; }
+.tr-samenvatting button { font-size: 12px; padding: 2px 8px; }
+/* Het streepje tussen "wijzigen" en "afdrukken": 1 px, 14 px hoog, in dezelfde grijstint als de
+   randen van het paneel. De strook heeft `gap: 10px`, dus het staat vanzelf op zijn plek. */
+.tr-samenvatting .tr-scheider { width: 1px; height: 14px; background: #cfcfcf; }
+/* De scheiding tussen de groepen in de lijst (horizontal dividers per maand is default.
+   Dit onderbreekt de eindeloos lange lijst). Elke groep is een eigen tbody, zodat de
+   zebra per groep opnieuw begint en de scheidingsregel zelf nooit gestreept is. */
+/* Het **lintje** onder de kop van een groep. De kop hangt tussen twee lijnen: de
+   grijze scheiding hierboven en het lint eronder. Dat lint is dezelfde kleur als het accent, zodat je
+   bij het scrollen ziet waar een nieuwe groep begint zonder de datum te lezen. Werkt voor elke
+   scheiding (dag, maand, jaar) - het is één klasse. */
+table.lijst tbody tr.scheidingsrij td { padding-top: 10px; padding-bottom: 3px; background: #fff;
+    border-top: 1px solid #c9c9c9; border-bottom: 0; font-size: 11.5px;
+    font-weight: 600; color: #555; }
+/* De lijn onder de groepskop loopt over de **hele breedte**: een doorlopende lijn geeft meer houvast
+   aan het beeld. Alleen onder de tekst leest hij als een onderstreping van het woord, niet als de
+   rand van een groep. Een doorlopende lijn maakt van de
+   kop een band: boven de grijze scheiding, onder het accent. De breedte komt vanzelf goed doordat de
+   kop één cel met `colspan="7"` is. */
+table.lijst tbody tr.scheidingsrij td { border-bottom: 2px solid var(--accent); }
+/* Staat de lijn "vandaag" direct onder een groepskop, dan is het lintje de scheiding: de donkere
+   lijn van de vandaag-regel zou er dan 4 px onder nog een streep bij zetten. */
+table.lijst tbody tr.scheidingsrij + tr.vandaagrij td { border-top: 0; }
+table.lijst tbody tr.scheidingsrij:hover td { background: #fff; }
+/* De kolombreedtes van de **transitlijst**. Ze staan hier en niet bij `table.lijst`,
+   want die klasse deelt de lijst met de aspectenlijst van de radix: daar gelden andere breedtes.
+   De maten komen van de inhoud, niet van het gevoel: datum "13 nov" 76, tijd 58, transit (glyph + ℞
+   + graad) 118, aspect (glyph + woord) 150, radix (glyph + naam + graad) 196; "huis" krijgt de rest.
+   Het jaar is uit de datum verdwenen omdat de scheidingsband het al noemt. */
+.tr-scroll table.lijst { table-layout: fixed; }
+/* De progressielijst zet de datum voluit (dd-mm-jjjj) en heeft daar tien tekens voor
+   nodig; de transits houden "13 nov" omdat het jaar al in de band staat. Eén regel, en de rest van de
+   tabel blijft de transitlijst. */
+.tr-scroll table.lijst.pr-lijst th:nth-child(1) { width: 96px; }
+/* De progressielijst heeft zes kolommen en een huisvakje achter de graad; de breedtes van de
+   transitlijst gelden voor zeven, dus de derde kolom krijgt hier zijn eigen maat. */
+.tr-scroll table.lijst.pr-lijst th:nth-child(3) { width: 140px; }
+.tr-scroll table.lijst.pr-lijst .pr-huis {
+    font-size: 11px; color: #6a6a6a; text-align: right; font-variant-numeric: tabular-nums; }
+
+.tr-scroll table.lijst th:nth-child(1) { width: 76px; }
+.tr-scroll table.lijst th:nth-child(2) { width: 58px; }
+.tr-scroll table.lijst th:nth-child(3) { width: 140px; }
+.tr-scroll table.lijst th:nth-child(4) { width: 168px; }
+/* De radixkolom is zo breed als zijn inhoud: celrand, de glyph, de langste naam ("Noordknoop",
+   74 px op 13 px), de afstand daartussen en de graad. De ruimte die overblijft gaat naar de lege
+   sluitkolom, die als marge leest. */
+.tr-scroll table.lijst th:nth-child(5) { width: 174px; }
+.tr-scroll table.lijst th:nth-child(6) { width: 0; }
+/* Een lege sluitkolom: zonder hem valt de restbreedte in de kolom "Huis" en staat het cijfer 400 px
+   van het radixpunt waar het bij hoort. Met een lege kolom erachter blijft de regel bij elkaar. */
+.tr-scroll table.lijst th:last-child, .tr-scroll table.lijst td.leeg { border-bottom: 0; }
+/* De lijn "vandaag" tussen de regels: hij hoort bij de tijdas, niet bij een groep, dus geen
+   achtergrond en geen zebra - alleen twee dunne lijnen en kleine letters. Hij verschijnt alleen als
+   het tijdvak vandaag omsluit. */
+table.lijst tbody tr.vandaagrij td { background: #fff; border-top: 1px solid #6f6f6f;
+    border-bottom: 1px solid #6f6f6f; font-size: 11.5px; color: #333; padding: 2px 8px; }
+table.lijst tbody tr.vandaagrij:hover td { background: #fff; }
+/* De standen in de **transitlijst** staan nauw op de regel. De vaste vakken van `.pos`
+   (21 / 16 / 19 px, rechts uitgelijnd) zijn gemaakt om standen in een kolom onder elkaar te zetten;
+   in een lopende regel laten ze de cijfers van de glyph wegvallen, en dan "danst" de regel: "25" en
+   "9" beginnen steeds ergens anders. Hier dus geen vaste breedtes. Het teken gaat van 15 naar 14 px,
+   zodat het niet boven de cijfers uitsteekt; de glyphs zakken 1 px, want een 14-15 px glyph heeft zijn
+   zwaartepunt hoger dan 13 px tekst en lijkt anders los van het woord te staan. */
+.tr-scroll table.lijst .pos .dg, .tr-scroll table.lijst .pos .mn {
+    width: auto; text-align: left; }
+/* Het zodiacteken even groot als de cijfers: op 14-15 px tussen 13 px cijfers steekt het boven de
+   regel uit én zakt het eronder, en dan is één getal geen blok meer maar drie losse stukjes. */
+.tr-scroll table.lijst .pos .sg { width: auto; font-size: 13px; padding: 0 2px; }
+.tr-scroll table.lijst .retro { font-size: 11.5px; }
+/* **Vaste segmenten per cel** ("dit is visueel een rommeltje. grootste boosdoener
+   is het retrograde symbool. misschien is opdelen in verschillende segmenten de oplossing?" en over
+   de radixkolom: "Dezelfde oplossing zou ook hier werken."). Elke cel met een glyph is een
+   `inline-grid` met drie vaste vakken, zodat de graad in élke regel op dezelfde plek begint:
+   [glyph 16 px][℞ 13 px][graad] en [glyph 16 px][naam][graad 54 px, rechts].
+   Het ℞-vak is er ook als er geen ℞ staat - anders schuift de graad op en is dat precies de onrust
+   die we wilden wegnemen. De verticale uitlijning komt van `align-items: baseline`, niet van
+   `vertical-align`: in een grid is een item een blok, en dan doet `vertical-align` niets meer. */
+/* `width: 100%` is functioneel: een inline-grid is normaal zo breed als zijn inhoud, en dan eindigt
+   het graadvak van de radix op een andere plek per regel. Met de volle
+   breedte verdeelt de `auto`-track de ruimte en ligt de rechterrand van elk graadvak gelijk. */
+/* De zebra van de transitlijst komt van de klasse `rij-b` (zie `trToon`), niet van `nth-child`: de
+   kop en de lijn "vandaag" tellen niet mee. Deze drie regels staan bewust in deze volgorde - de hover
+   moet de zebra overschrijven en heeft daarvoor dezelfde specificiteit nodig, later in het bestand. */
+.tr-scroll table.lijst tbody tr:nth-child(even) td { background: #fff; }
+.tr-scroll table.lijst tbody tr.rij-b td { background: #e2e5e2; }
+.tr-scroll table.lijst tbody tr:hover td { background: #f8d7d0; }
+.tr-scroll table.lijst .seg { display: inline-grid; align-items: baseline; width: 100%; column-gap: 4px; }
+/* **De cellen staan op de baseline, niet in het midden.** De browser zet de inhoud van een cel
+   standaard midden in de rijhoogte; zodra één cel iets hoger is dan de rest (een glyph van 14 px, een
+   segment) schuift de tekst van die cel 1 px op en danst de regel. Met `vertical-align: baseline` deelt
+   elke cel de baseline van de rij, hoe hoog de inhoud ook is. */
+.tr-scroll table.lijst td, .tr-scroll table.lijst th { vertical-align: baseline; }
+/* Vier vakjes: glyph, ℞, graad, huis. Het huisvakje is er ook als er geen huis is, zodat de graad
+   in elke regel op dezelfde plek begint. */
+/* De graad krijgt een **vaste** breedte, net als bij het radixsegment: met `auto` bepaalt de inhoud
+   van elke regel waar het huisvakje begint, en dan staat "H3" bij de ene regel 2 px verder dan bij de
+   andere - precies de onrust die de vaste vakjes er ooit uit haalden. */
+.tr-scroll table.lijst .seg-transit { grid-template-columns: 16px 13px 56px 24px; }
+.tr-scroll table.lijst .seg-radix { grid-template-columns: 16px minmax(0, auto) 54px; }
+.tr-scroll table.lijst .seg-radix .pos { justify-self: end; }
+.tr-scroll table.lijst .seg .glyf { font-size: 14px; }
+/* Het aspectvak houdt zijn eigen afstand: daar staat geen segment, maar glyph + woord. */
+.tr-scroll table.lijst .aspvak .glyf { font-size: 14px; margin-right: 5px; }
+/* Datum en huis rechts uitgelijnd - het zijn getallen, die lees je aan de
+   rechterkant. De kop gaat mee, anders staat de kop niet boven zijn kolom. */
+.tr-scroll table.lijst th:nth-child(1), .tr-scroll table.lijst td:nth-child(1) { text-align: right; }
+.tr-scroll table.lijst th:nth-child(6), .tr-scroll table.lijst td:nth-child(6) { text-align: right; }
+/* Maar niet de banden en de lijn "vandaag": die zijn één cel over de hele breedte en horen links te
+   beginnen. */
+.tr-scroll table.lijst tr.scheidingsrij td, .tr-scroll table.lijst tr.vandaagrij td {
+    text-align: left; }
+/* De kop van het hele formulier is één maat groter dan de groepskoppen: de groepen hebben echte
+   koppen, dus de titel erboven mag niet de zwakste van het stel zijn. */
+.tr-formulier h2 { font-size: 13px; font-weight: 600; color: var(--accent); margin: 0 0 8px; }
+/* **Drie banden** in het formulier. Elke band is een eigen regel over de volle breedte:
+   het tijdvak, de selectie, en de soorten met de lijstindeling en de knop. `flex-wrap: wrap` op
+   `.tr-kolommen` staat er al, dus een band is een kind met `flex: 0 0 100%`. */
+.tr-formulier .tr-band1, .tr-formulier .tr-band2, .tr-formulier .tr-band3 { flex: 0 0 100%; }
+/* `flex-wrap: wrap` op de twee groepenbanden is functioneel: op 900 px breed is
+   de inhoud 494 px en past de selectie (170 + 170 + 204 + 32 = 576) niet op één regel. Zonder wrap
+   schuift de Radix-groep buiten het formulier en komt er een horizontale schuifbalk in het paneel.
+   Mét wrap valt hij naar een tweede regel en groeit het formulier - binnen een band die bij zijn
+   inhoud hoort. */
+.tr-formulier .tr-band2, .tr-formulier .tr-band3 {
+    display: flex; gap: 16px; row-gap: 12px; align-items: flex-start; flex-wrap: wrap; }
+.tr-formulier .tr-band3 { gap: 28px; }
+/* Berekenen staat aan het eind van de leesorde, niet meer tussen de vinkjes: `margin-left:auto` duwt
+   hem naar de rechterkant van zijn band. */
+.tr-formulier .tr-actie { margin-left: auto; margin-top: 12px; }
+/* Het tijdvak op één regel: de labels **naast** de velden. Een plaatshouder in het veld
+   valt weg zodra er een datum in staat, en dan zie je niet meer welke van de twee "van" is. */
+.tr-formulier .tr-regel { display: flex; align-items: center; gap: 8px; }
+.tr-formulier .tr-regel label { font-size: 12px; color: #444; margin: 0; }
+.tr-formulier .tr-regel #tr-van, .tr-formulier .tr-regel #tr-tot { width: 96px; }
+.tr-formulier .tr-regel button { margin: 0; }
+.tr-formulier #tr-van, .tr-formulier #tr-tot {
+    height: 26px; padding: 0 6px; border: 1px solid #a9a9a9; border-radius: 2px;
+    font: inherit; font-size: 12.5px; box-shadow: inset 0 1px 1px rgba(0, 0, 0, .04); }
+.tr-formulier #tr-van:focus, .tr-formulier #tr-tot:focus {
+    outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-ring); }
+.tr-bij { font-size: 11.5px; font-weight: 400; color: #7a7e7a; }
+
+.tr-kolommen { display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; }
+
+/* **De tabelvorm**, gekozen (als proef in de progressies, daarna voor beide technieken):
+   een labelkolom en per onderwerp één rij. De rijkoppen doen wat de groeps koppen deden, en de
+   scheidingslijnen zijn de lijntjes van de tabel. */
+table.tr-tabel { width: 100%; border-collapse: collapse; }
+table.tr-tabel th { width: 108px; padding: 6px 12px 6px 0; text-align: left; vertical-align: top;
+    font-size: 12.5px; font-weight: 600; color: #333; white-space: nowrap; }
+table.tr-tabel td { padding: 6px 0; vertical-align: top; }
+table.tr-tabel tr + tr th, table.tr-tabel tr + tr td { border-top: 1px solid #e6e6e6; }
+.tr-rij2 { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+/* Twee regels in één blok (de datums en daaronder de knoppen) hebben ruimte nodig: zonder marge
+   staan de knoppen letterlijk op de invoervelden. */
+.tr-regel + .tr-regel { margin-top: 8px; }
+.tr-rij2 .tr-vakken { max-width: none; }
+.tr-rij2-actie { gap: 14px; }
+.tr-rij2 .tr-bereken-inrij { margin-left: 14px; }
+
+/* De prenatale stand heeft geen formulier: één regel met de schakelaar, en daaronder de lijst.
+   **Geen uitlegregel meer** ("Dit is meer een beschrijving wat we doen... Een
+   beschrijving voor onszelf, niet voor de gebruiker. Weglaten.") - bij de maanfasen net zo. Wat
+   overblijft is het venster ("terug 10/20/30 jaar", "fasen 4/8") met de telling rechts. Daarom is
+   dit een flexrij en geen grid meer: de lege linkerkolom van de grid duwde de schakelaars naar
+   rechts, en dat leest als een balkje dat bij niets hoort. */
+.pren-kop { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px;
+    margin: 0 0 10px; font-size: 12.5px; color: #444; }
+.pren-kop .pren-telling { margin-left: auto; font-size: 12px; color: #666; white-space: nowrap; }
+.maan-nu { margin: 0 0 8px; font-size: 12.5px; color: #333; }
+.maan-hoek { color: #777; font-size: 11px; }
+.maan-sleutel { color: var(--accent-diep); font-size: 11.5px; letter-spacing: .04em; }
+.tr-scroll table.lijst.maan-lijst th:nth-child(1) { width: 96px; }
+.tr-scroll table.lijst.maan-lijst th:nth-child(2) { width: 76px; }
+.tr-scroll table.lijst.maan-lijst th:nth-child(3) { width: 180px; }
+.tr-scroll table.lijst.maan-lijst th:nth-child(4) { width: 190px; }
+.tr-scroll table.lijst.maan-lijst th:nth-child(5) { width: 150px; }
+.tr-scroll table.lijst.maan-lijst th:nth-child(6) { width: 0; }
+.tr-scroll table.lijst.pren-lijst th:nth-child(1) { width: 96px; }
+.tr-scroll table.lijst.pren-lijst th:nth-child(2) { width: 112px; }
+.tr-scroll table.lijst.pren-lijst th:nth-child(3) { width: 118px; }
+.tr-scroll table.lijst.pren-lijst th:nth-child(4) { width: 130px; }
+.tr-scroll table.lijst.pren-lijst th:nth-child(5) { width: 174px; }
+.tr-scroll table.lijst.pren-lijst th:nth-child(6) { width: 0; }
+.tr-groep { flex: 0 0 auto; }
+/* De kop van een groep is een **eigen regel** en leest als een kop. Op één regel staan een titel van
+   12 px, een vinkje van 13 px met een woord van 11 px en een knop van 18 px, en die drie hebben geen
+   gemeenschappelijke lijn die het oog kan vinden. */
+.tr-kop { font-size: 12.5px; font-weight: 600; color: #333; margin: 0 0 5px; }
+/* Twee gelijke schakelaars onder de kop: "alles aan" en "alles uit". Ze zijn even lang en dus even
+   breed, staan op één regel, en hebben geen van beide een toestand - de vakjes eronder zijn de
+   toestand. Dat is de gelijkvormigheid die hier boven de leerboekjes-eerlijkheid gaat. */
+.tr-schakels { display: flex; gap: 6px; margin: 0 0 6px; }
+.tr-schakel { height: 18px; padding: 0 8px; font: inherit; font-size: 11px; line-height: 16px;
+    border: 1px solid #adadad; border-radius: 2px; background: linear-gradient(#fdfdfd, #f0f0f0);
+    color: #333; cursor: pointer; margin: 0; }
+.tr-schakel:hover { filter: brightness(0.97); }
+.tr-schakel:focus-visible { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-ring); }
+.tr-vakken { display: flex; flex-wrap: wrap; }
+/* 39 -> 34 px: het glyph blijft 15 px, het is lucht die weggaat, en tien transits passen
+   daarmee in twee rijen van vijf in plaats van drie van vier. De `max-width` per groep staat in de
+   opbouw van het formulier en is daarmee meegegroeid (170 / 170 / 204). */
+.tr-vak { display: inline-flex; align-items: center; gap: 4px; width: 34px; margin: 0 0 2px; }
+/* Het glyph in het vakje op `line-height: 1`. Zonder die regel is het regelvak van een
+   15 px glyph 19 px hoog, en dan zet `align-items: center` het *vak* op het midden van het vinkje -
+   niet het teken. */
+.tr-vak .glyf { font-size: 15px; line-height: 1; }
+.tr-vak input, .tr-alle input, .tr-optie input { width: auto; margin: 0; }
+.tr-knoppenrij { display: flex; gap: 6px; margin-top: 8px; }
+.tr-optie { display: block; margin: 6px 0 0; font-size: 12px; color: #444; }
+/* In de derde band staan de aanvullingen en de lijstindeling naast elkaar op één regel. */
+.tr-formulier .tr-band3 .tr-optie { display: inline-block; margin: 0 14px 0 0; }
+/* Het vinkje (en de rondjes van de lijstindeling) staat met zijn rand tegen het woord: "☐Huis
+   ingress", "○geen". 4 px lucht, net als in de groepskoppen. Deze regel staat ná de gedeelde
+   `margin: 0` hierboven, want anders wint die. */
+.tr-optie input { margin-right: 4px; }
+.tr-rij { display: flex; gap: 12px; align-items: stretch; flex: 1; min-height: 0; margin-top: 12px; }
+.tr-rij > .tr-lijst { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; min-height: 0; }
+/* Twee standen binnen de tab. De strip is een tweede, kleinere tabrij van 22 px: hij
+   kost minder dan één regel en levert de lijst de volle breedte en hoogte op. Hij is
+   bewust een maat kleiner (21 px, korps 12) zodat hij als "binnen Transits" leest en niet als een
+   tweede niveau van het programma. */
+.tr-sub { display: flex; align-items: flex-end; gap: 0; height: 22px; margin: 0 0 10px; flex: none; }
+.tr-sub button { height: 21px; padding: 0 11px; margin-right: 2px; background: #ededed;
+    border: 1px solid #c9c9c9; border-bottom: 0; border-radius: 3px 3px 0 0;
+    position: relative; top: 1px; font-size: 12px; }
+.tr-sub button:hover { background: #e3e3e3; }
+.tr-sub button.aan { background: #fff; height: 22px; top: 0; color: var(--accent);
+    box-shadow: inset 0 2px 0 var(--accent); border-bottom: 1px solid #fff; }
+.tr-subvul { flex: 1 1 auto; border-bottom: 1px solid #c9c9c9; height: 1px; margin-bottom: -1px; }
+.tr-stand { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; }
+/* Een klasse en niet het `hidden`-attribuut: `display:flex` wint van [hidden]. */
+.tr-stand.weg { display: none; }
+.tr-nu { overflow: auto; min-height: 0; }
+/* De kolommen van de **momentopname**. Zeven kolommen met elk een eigen vaste breedte,
+   want de inhoud varieert en zonder vaste maten danst het beeld. De maten komen van de gemeten tekst bij
+   13 px plus 16 px celrand. De lege sluitkolom erachter vangt de restbreedte op. */
+/* Geen `min-width`: bij `table-layout: fixed` is de som van de kolombreedtes (632 px) zelf de
+   ondergrens - de tabel wordt nooit smaller dan de inhoud vraagt. */
+.tr-nu table.lijst { table-layout: fixed; width: 100%; max-width: 740px; }
+/* De kop houdt dezelfde breedte als de tabel: de sorteerschakelaar staat dan op één lijn met de
+   rechterrand van de kolommen en niet 140 px daarbuiten. */
+.tr-nu h2.met-sorteer { max-width: 740px; }
+.tr-nu table.lijst th:nth-child(1) { width: 118px; }
+.tr-nu table.lijst th:nth-child(2) { width: 76px; }
+.tr-nu table.lijst th:nth-child(3) { width: 34px; }
+.tr-nu table.lijst th:nth-child(4) { width: 48px; }
+/* Kolom 5 is de vulkolom: **geen** breedte, dus hij krijgt wat er overblijft en krimpt het eerst.
+   De tabel is gecapt op 740 px (632 px inhoud + 108 px lucht), zodat het gat in het midden nooit
+   groter wordt dan dat. */
+.tr-nu table.lijst th:nth-child(6) { width: 132px; }
+.tr-nu table.lijst th:nth-child(7) { width: 104px; }
+.tr-nu table.lijst th:nth-child(8) { width: 120px; }
+/* De glyphs op 14 px met hun eigen lucht: dezelfde maat als in de transitlijst, want het is dezelfde
+   soort regel. De datumkolom staat rechts en op vaste cijfers, zodat de dagen onder elkaar vallen. */
+.tr-nu table.lijst .aspvak .glyf { font-size: 14px; margin-right: 5px; }
+.tr-nu table.lijst .puntvak .glyf { font-size: 14px; margin-right: 5px; }
+/* In het vaste glyphvak is die marge er één te veel: het teken staat al gecentreerd in 16 px en de
+   lucht erna zit in het vak zelf. Zonder deze regel duwt de 5 px marge het teken tegen de naam aan. */
+.tr-nu table.lijst .glyfvak .glyf { margin-right: 0; }
+.tr-nu table.lijst td:nth-child(8) { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tr-nu table.lijst td.leegvak { color: #8a8f8a; }
+/* De grens op de lijst staat **boven** de lijst en niet in het meldblok onder het formulier
+   ("duidelijk zichtbaar boven de lijst, mogelijk met vermelding van 500 van de XXXX regels"). Zelfde
+   vlak en rand als het uitlegvak: tekst #333 erop is 11,1:1. */
+.tr-grens { margin: 0 0 8px; padding: 6px 8px; font-size: 12px; color: #333;
+    background: var(--accent-vlak); border: 1px solid var(--accent-lijn); border-radius: 2px; }
+.tr-grens[hidden] { display: none; }
+.tr-scroll { overflow: auto; min-height: 0; flex: 1 1 auto; }
+.tr-voortgang { display: flex; align-items: center; gap: 8px; margin: 0 0 8px; }
+/* `display:flex` wint van [hidden]; zonder deze regel blijft de balk na de berekening staan. */
+.tr-voortgang[hidden] { display: none; }
+.tr-balk { flex: 1 1 auto; height: 8px; background: #e6e6e3; border-radius: 2px; overflow: hidden; }
+.tr-balk > div { height: 100%; width: 0; background: var(--accent); }
+.tr-balktekst { font-size: 12px; color: #444; white-space: nowrap; }

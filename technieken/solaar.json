@@ -1,0 +1,44 @@
+{
+  "id": "solaar",
+  "naam": "Solaar - de Zon terug op haar geboortestand",
+  "jaar": 2,
+  "aan": true,
+  "module": true,
+  "bron": [
+    {
+      "soort": "eigen programma",
+      "titel": "github.com/Astrosofica/Horoscoopberekening, src/Calculation/SolarReturnCalculator.php"
+    }
+  ],
+  "invoer": {
+    "kaart": true,
+    "bijzonder": {
+      "jaar": "verplicht",
+      "plaats": "verplicht, standaard de huidige locatie"
+    }
+  },
+  "rekent": [
+    {
+      "wat": "moment",
+      "hoe": "Newton op de Zonsnelheid",
+      "gok": "de verjaardag in het doeljaar",
+      "max_slagen": 5
+    },
+    {
+      "wat": "tijd",
+      "hoe": "het UT-moment omgerekend naar de geldende zonetijd van de gekozen plaats"
+    }
+  ],
+  "tekent": [],
+  "duidt": [],
+  "conventies": [
+    "de tijd in het formulier is de kloktijd van de gekozen plaats, niet UT",
+    "de terugkeer die het dichtst bij de verjaardag in dat jaar ligt: bij een geboorte op 1 januari valt hij op 31 december van het jaar ervoor, en dat zegt de meldregel",
+    "geen eigen jaargrens: buiten 1800-2399 rekent de kern met de Moshier-benadering en meldt dat"
+  ],
+  "ijking": {
+    "tegen": "een bisectie rond de verjaardag, op vijf gevallen (maart, juli, november, 1 januari, 31 december)",
+    "gemeten": "3 slagen per geval, restfout onder 0,0001\", het moment binnen 0,0014 s van de bisectie, en de rondrit door het formulier (kloktijd terug naar UT) 0 s",
+    "tolerantie": "0,01 s tussen de twee methoden; de drempel van het PHP-programma (0,02\") blijft de eis waaraan het antwoord moet voldoen"
+  }
+}

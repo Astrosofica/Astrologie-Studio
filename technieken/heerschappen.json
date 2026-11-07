@@ -1,0 +1,41 @@
+{
+  "id": "heerschappen",
+  "naam": "Heerschappen",
+  "jaar": 1,
+  "aan": true,
+  "module": true,
+  "bron": [
+    {
+      "soort": "keuze",
+      "titel": "het moderne schema: Schorpioen Pluto, Waterman Uranus, Vissen Neptunus"
+    }
+  ],
+  "invoer": {
+    "kaart": true,
+    "opties": {
+      "schema": [
+        "modern"
+      ]
+    }
+  },
+  "rekent": [
+    {
+      "wat": "heerschap-per-positie",
+      "schema": "modern"
+    },
+    {
+      "wat": "heersers-per-huis",
+      "schema": "modern"
+    }
+  ],
+  "tekent": [
+    "heerschap-in-de-lijst"
+  ],
+  "duidt": [],
+  "ijking": {
+    "tegen": "geen enkele afdruk laat heerschappen zien",
+    "gemeten": "n.v.t. - een vakinhoudelijke keuze, geen berekening om tegen na te rekenen",
+    "tolerantie": "n.v.t."
+  },
+  "open": "Waar de heerschappen horen te staan: nu in de gegevenstabel en in de afdruk (heerser per huis). Een vaste plek in het wiel of een aparte notatie is nog niet gekozen."
+}

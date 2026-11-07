@@ -1,0 +1,116 @@
+{
+  "id": "aspecten",
+  "naam": "Aspecten - de acht met orbs",
+  "jaar": 1,
+  "les": "1",
+  "aan": true,
+  "bron": [
+    {
+      "soort": "eigen programma",
+      "titel": "src/Calculation/AspectCalculator.php, ASPECT_DEFINITIONS"
+    }
+  ],
+  "invoer": {
+    "geboorte": true,
+    "moment": false,
+    "opties": {
+      "orb": "vast per aspect"
+    }
+  },
+  "rekent": [
+    {
+      "wat": "aspecten",
+      "set": "chta-acht",
+      "orb": "per aspect"
+    },
+    {
+      "wat": "regel",
+      "naam": "buiten teken",
+      "inhoud": "vervalt boven 2 graden orb; geldt voor 0/60/90/120/150/180"
+    },
+    {
+      "wat": "regel",
+      "naam": "dominant",
+      "inhoud": "hard aspect (0/45/90/135/180) naar Ascendant of MC onder 2 graden"
+    },
+    {
+      "wat": "richting",
+      "naam": "A/S",
+      "inhoud": "ingaand (applying) of uitgaand (separating), gemeten uit de snelheden. Op het scherm A = ingaand, S = uitgaand; in de kaart-JSON het veld scheidend (true = uitgaand). Let op de termen: applying is niet aanvallend en separating is niet scheidend in de zin van verbrekend"
+    }
+  ],
+  "tekent": [
+    "de lijst op het scherm: alle aspecten met orb, elk aspect één keer bij het eerste punt",
+    "de aspectlijnen in het wiel, in kleur per groep (alleen op het scherm)"
+  ],
+  "weergave": {
+    "scherm": "een lijst met zes kolommen (planeet 1, aspect, planeet 2, orb met S/A, stand 1, stand 2), zebra en hover per regel, geen markering van dominante aspecten; opbouw naar astro.astrosofica.nl (public_html/templates/aspects.php). Zonder de aspecten waarin de Noordknoop of de Dagpars voorkomt - dezelfde regel als de trap op de A4",
+    "papier": "de trap in de linkeronderhoek, zie technieken/afdruk.json",
+    "waar": "schil/static/index.html: lijstHTML vult #lijstvak; trapHTML vult de A4",
+    "regel": "de matrix staat alleen op de A4; het scherm toont een lijst met alle aspecten en orb, elk aspect één keer bij het eerste punt, en geen markering van dominante aspecten (die hoort bij jaar 2)"
+  },
+  "duidt": [],
+  "conventies": [
+    {
+      "hoek": 0,
+      "orb": 6,
+      "naam": "Conjunctie",
+      "soort": "hard"
+    },
+    {
+      "hoek": 180,
+      "orb": 6,
+      "naam": "Oppositie",
+      "soort": "hard"
+    },
+    {
+      "hoek": 90,
+      "orb": 6,
+      "naam": "Vierkant",
+      "soort": "hard"
+    },
+    {
+      "hoek": 120,
+      "orb": 5,
+      "naam": "Driehoek",
+      "soort": "harmonisch"
+    },
+    {
+      "hoek": 60,
+      "orb": 4,
+      "naam": "Sextiel",
+      "soort": "harmonisch"
+    },
+    {
+      "hoek": 150,
+      "orb": 2.5,
+      "naam": "Inconjunct",
+      "soort": "overig"
+    },
+    {
+      "hoek": 45,
+      "orb": 2,
+      "naam": "Halfvierkant",
+      "soort": "hard"
+    },
+    {
+      "hoek": 135,
+      "orb": 2,
+      "naam": "Anderhalfvierkant",
+      "soort": "hard"
+    }
+  ],
+  "kleurgroepen": {
+    "hard": "0, 45, 90, 135, 180 - rood #c62828",
+    "harmonisch": "60, 120 - groen #2e7d32",
+    "overig": "150 (inconjunct) - grijs #6b7280, de neutrale groep: niet hard en niet harmonisch",
+    "waar": "de kleuren staan in teken/spec.json (kleuren.aspect); de groep per aspect in kern/aspecten.py (soort_van)",
+    "papier": "alleen op het scherm: de afdruk laat de aspectlijnen weg (besluit T14), dus de afdruk blijft zwart-wit",
+    "regel": "hard rood, harmonisch groen, de inconjunct als eigen groep"
+  },
+  "ijking": {
+    "tegen": "astro.astrosofica.nl en de matrix in de afdruk van een commercieel programma",
+    "gemeten": "print A 19 aspecten; nog niet cel voor cel tegen de printmatrix gelegd",
+    "tolerantie": "orb afgekapt op de minuut"
+  }
+}

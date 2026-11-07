@@ -1,0 +1,19 @@
+# Eigen plaatsen voor het invulscherm - aanvullingen op de lijst van GeoNames.
+#
+# Deze regels komen OVER de gedownloade lijst heen (data/plaatsen.json), dus een eigen regel
+# wint het van dezelfde naam uit GeoNames en staat bovenaan in de keuzelijst. Bewerk nooit
+# plaatsen.json zelf: dat bestand wordt opnieuw gemaakt met `data/maak-plaatsen.py`.
+#
+# Vorm: naam, dan een TAB, dan breedte, lengte, land en zone. Een regel die met # begint of leeg is
+# wordt overgeslagen. Land is de tweeleterige code (NL, BE, DE ...); laat je de zone leeg, dan wordt
+# de zone van het land genomen (NL -> Europe/Amsterdam, BE -> Europe/Brussels). Zonder land en
+# zonder zone zegt het programma dat de zone onbekend is in plaats van er iets van te maken.
+#
+# Achter de zone mogen twee vrije velden: de streek (provincie/deelstaat) en de gemeente. Ze komen
+# in de keuzelijst achter de naam te staan, net als bij de plaatsen van GeoNames; laat je ze weg,
+# dan bestaat het label uit de naam en het land.
+#
+# Voorbeeld (haakjes weglaten, de velden met een echte tab scheiden):
+# Mijn ouderlijk huis	52.0529	6.0995	NL	Europe/Amsterdam	Gelderland	Rheden
+# Zomerhuis	43.7696	11.2558	IT	Europe/Rome	Toscane
+# Onbekende plek	-33.8679	151.2073	AU

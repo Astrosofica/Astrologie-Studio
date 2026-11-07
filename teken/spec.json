@@ -1,0 +1,146 @@
+{
+  "_toelichting": "Eén specbestand: alle maten, lijndiktes, lettergroottes en kleuren van het wiel staan hier en nergens anders (besluit B1/T11). De code leest dit bestand; pas je het aan, dan verandert de tekening.",
+  "versie": "basis-0.2",
+  "canvas": {
+    "breedte": 1000,
+    "hoogte": 1000,
+    "achtergrond": "#ffffff",
+    "_toelichting": "Dit is het **enkele** wiel: de stand die het Wiel-tabblad en de A4 printen. Sinds 2 november 2026 staat de bi-wheel-stand niet meer hier maar in het blok `biwiel` onderaan: een schakelaar op het hoofd wiel wisselt tussen de twee, en zonder transits moet deze tekening byte voor byte dezelfde blijven als vóór die dag."
+  },
+  "midden": {
+    "x": 500,
+    "y": 500
+  },
+  "orientatie": {
+    "ascendant_hoek": 180,
+    "sectoren": "eigen-graden",
+    "_toelichting": "Het horizontale assenkruis is de Asc-Desc-as (Asc links). 'eigen-graden': elke cusp staat op zijn echt berekende graad, lineair gerekend vanaf de Ascendant - dan zijn de sectoren ongelijk (Koch) en staat de MC niet per se boven, precies zoals in de proefafdruk met eigen graden. 'vast-30': twaalf even brede sectoren van 30 graden met de echte cusp als label, zoals in de proefafdruk met vaste sectoren; de positie binnen een sector loopt dan mee met de echte graden. Meting op beide afdrukken: de vaste-sectoren-afdruk zet de cusplijnen op 0/30/60 graden (cusp 11 wijkt 3,3 graden af), de eigen-graden-afdruk zet de MC op 53,3 graden in plaats van boven."
+  },
+  "stralen": {
+    "buitenrand": 478,
+    "cuspband_binnen": 442,
+    "zodiakring_binnen": 400,
+    "zodiakring_buiten": 442,
+    "_toelichting_ringen": "De ringen van het **enkele** wiel: cuspband 442-478 met de labels op 460, de getinte zodiakring 400-442, de radixketen 240-372. `zodiakring_buiten` is sinds 2 november 2026 een eigen sleutel (de tint hing aan `cuspband_binnen`); in deze stand vallen ze samen op 442, dus dit is dezelfde tekening als vóór die dag. De bi-wheel-stand zet ze uit elkaar - zie het blok `biwiel` onderaan.",
+    "zodiak_teken": 421,
+    "zodiak_tik": {
+      "kort": 6,
+      "lang": 12,
+      "graad": 3,
+      "_toelichting": "lang = per 10 graden, kort = per 5 graden, graad = per 1 graad (360 tikjes per rondgang; de veelvouden van 5 en de tekengrens krijgen hun eigen langere tik)"
+    },
+    "huisnummer_cirkel": 186,
+    "lichaam_tick_buiten": 400,
+    "lichaam_tick_binnen": 384,
+    "lichaam_keten": [
+      372,
+      338,
+      304,
+      270,
+      240
+    ],
+    "aspecten": 160,
+    "binnencirkel": 160
+  },
+  "lijnen": {
+    "buitenrand": 1.0,
+    "_toelichting_buitenrand": "Besluit (17 oktober 2026): de buitenste rand wordt dun (1,0 in plaats van 2,0) en grijs in plaats van zwart. De straal blijft 478 - die moest absoluut blijven staan. Zie ook kleuren.buitenrand.",
+    "cusp": 1.0,
+    "binnencirkel": 1.0,
+    "lichaam_tick": 1.2,
+    "leiderlijn": 0.8,
+    "zodiak_tik": 0.6,
+    "zodiak_grens": 0.9,
+    "aspect": 0.8
+  },
+  "letters": {
+    "cusp_label": 16,
+    "cusp_teken": 20,
+    "huisnummer": 20,
+    "zodiak_teken": 22,
+    "lichaam_glyf": 26,
+    "lichaam_graad": 20,
+    "lichaam_teken": 20,
+    "lichaam_minuut": 20,
+    "retro": 15,
+    "transit_retro": 17,
+    "transit_hoek": 20,
+    "_toelichting_transit_hoek": "de Ascendant en de MC van dit moment staan als **woord** in de band ('AC' en 'MC' hebben geen teken in het font). 20 pt is 22,7 eenheden breed - smaller dan een glyph met zijn ℞ (37,6). Gemeten 3 nov 2026: met de twee hoeken erbij verschuiven er nog steeds 2 van de 13 blokken, want 'AC' op 27° en 'MC' op 281° vallen in open ruimte. Ze staan in Astro Sans (de enige font in de tekening); dat leest iets zwaarder dan een glyph, maar het is wél dezelfde bron als de rest van het wiel.",
+    "_toelichting_cusplabels": "de stukjes van een cusplabel staan rechtop langs de tangent van hun cusp, in de band van 36 eenheden (cuspband_binnen 442 -> buitenrand 478); op 3 en 9 uur loopt daardoor hun breedte in de richting van de band. Besluit (17 oktober 2026): de band van 30 naar 36, omdat de labelinkt (27,6 eenheid hoog) met 1,2 lucht per kant precies tegen beide lijnen stond; nu is dat 4,2. De binnenlijn kon alleen naar binnen, want de rand op 478 moest blijven staan - de getinte zodiakring wordt daardoor 42 in plaats van 48 breed en de ringglyphs schuiven mee naar het midden (zodiak_teken 424 -> 421). Het glyphstukje is het grootste van de drie stukjes: met de glyphs uit Symbola stak het Ram-stukje 1,66 eenheid over de buitenrand, met StarfisherUni (even hoog) het Steenbok-stukje 0,20 over de binnenrand. Daarom staat cusp_teken op 20 in plaats van 22 - gemeten met scripts/meet-cusplabels.py: bij 20 houdt elk stukje minstens 1,18 eenheid papier (bij 21 was dat 0,49). De cijfers blijven op cusp_label 16 en de ringglyphs houden hun eigen maat letters.zodiak_teken (22)."
+  },
+  "kleuren": {
+    "lijn": "#333333",
+    "buitenrand": "#9a9a9a",
+    "_toelichting_buitenrand": "de buitenste cirkel op 478: sinds 17 oktober 2026 #9a9a9a (dezelfde kleur als de lichte huislijnen) in plaats van #333333. Ontbreekt deze sleutel, dan valt de rand terug op kleuren.lijn - dat is de oude stand.",
+    "tekst": "#111111",
+    "cusp_label": "#333333",
+    "cusp_as": "#111111",
+    "cusp": "#9a9a9a",
+    "zodiak_tik": "#111111",
+    "zodiak_graad": "#333333",
+    "zodiak_grens": "#333333",
+    "_toelichting_zodiakring": "de graadverdeling in de zodiakring: zodiak_tik = de 5- en 10-graden-streepjes, zodiak_graad = de fijne verdeling per graad, zodiak_grens = de lijn op elke tekengrens. Besluit (13 oktober 2026): de 5- en 10-graden-streepjes donkerder. De fijne verdeling is #333333 en niet lichter: de tikjes liggen op de tekentinten en een lichtgrijze lijn zakt daar weg (gemeten contrast #b0b0b0 tegen de vier tinten: 1,16-1,72; #333333: 6,77-10,03)",
+    "_toelichting_cusplijnen": "de huislijnen: cusp_as = de vier assen (huis 1 en 7 = Asc-Desc, 4 en 10 = MC-IC), cusp = de acht andere huislijnen. Anders dan de aspectkleuren en de tekentinten gaan deze twee wel mee in de afdruk (besluit van 13 oktober 2026: assen zwart, tussenliggende lijnen lichter)",
+    "retrograde": "#a04e58",
+    "aspect": {
+      "_toelichting": "alleen op het scherm; de afdruk laat de aspectlijnen weg (besluit T14). De groepen komen uit kern/aspecten.py (soort_van): hard = 0/45/90/135/180, harmonisch = 60/120, overig = 150 (inconjunct)",
+      "hard": "#c62828",
+      "harmonisch": "#2e7d32",
+      "overig": "#6b7280"
+    },
+    "element": {
+      "_toelichting": "de tint van de tekens in de zodiakring (besluit van 13 oktober 2026, op advies van buiten: vier pasteltinten; tweede ronde diezelfde avond: blauw bij Lucht en groen bij Water, en meer verschil tussen roze en oker). Welk teken bij welk element hoort staat in kern/elementen.py. De vier tinten liggen op een helderheidsladder (L* 91 / 87 / 82 / 77) zodat ze ook zonder kleur te onderscheiden zijn. Alleen op het scherm; de afdruk en de A4-weergave zetten de tintlaag uit",
+      "Vuur": "#F3D4CC",
+      "Aarde": "#D2BC80",
+      "Lucht": "#D2E8FB",
+      "Water": "#B0D5BB"
+    }
+  },
+  "tekst": {
+    "familie": "Astro Sans, DejaVu Sans, sans-serif",
+    "dikte": "normal"
+  },
+  "glyph_font": {
+    "familie": "Astro Sans",
+    "bestand": "schil/static/astro-sans.ttf",
+    "_toelichting": "het eigen font (16 okt 2026, tweede stand): de 34 astrologie-glyphs uit StarfisherUni van Kenneth Hirst (2014, SIL OFL 1.1 voor alles boven tekencode 127; de kale Latijnse letters daar komen uit Bitstream Vera) en de letters, de cijfers, het graadteken en de minuutstreep uit Source Sans 3 op gewicht 600. De glyphs zijn met 1,185 geschaald zodat ze even hoog zijn als die van Symbola daarvoor (gemiddeld 0,823 em); de Zon staat in StarfisherUni op U+263C, Steenbok komt uit capricornalt (U+E021) en Pluto uit plutoalt2 (U+E023, de P-vorm - besluit van 16 okt 2026). Gebouwd met `data/maak-font.py --bron data/fonts/bron/Source_Sans_3.ttf --gewicht 600 --glyphs data/fonts/bron/StarFisherUni.ttf --glyph-schaal 1.185 --glyph-vanaf 2609=263C --glyph-vanaf 2651=E021 --glyph-vanaf 2647=E023`; de bronfonts en hun licentieteksten staan in data/fonts/bron/, de herkomst en de licenties in data/fonts/LICENTIE-AstroSans.txt. Het bestand gaat mee in de SVG zodat iedereen dezelfde tekens ziet, en de pagina laadt hetzelfde bestand. De glyphs komen uit een ander font dan de letters (besluit van 16 okt 2026)."
+  },
+  "maten": {
+    "token_marge": 6,
+    "retro_marge": 10,
+    "vlak_straal": 45,
+    "_toelichting_vlak_straal": "de straal van het onzichtbare raakvlak om een transitblok, voor de leesregel in de statusbalk (3 nov 2026). De glyph is op zijn scherm 8,7 px en de tik 3,3 px, dus zonder dit vlak is er niets om op te mikken; 45 eenheden is 15 px op zijn maat en groter dan een blok (37,6), zodat ook het ℞ meedoet. Bij overlap wint het laatst getekende blok.",
+    "_toelichting_retro_marge": "de ruimte tussen een transitglyph en zijn ℞ (2 nov 2026: het retrograde teken iets groter en iets verder van de planeet af). Staat los van token_marge: die is gedeeld met de radixlabels en de cusplabels, en daar mag niets aan veranderen.",
+    "keten_drempel": 0.4,
+    "tekenbreedte_smal": 0.34,
+    "tekenbreedte_gewoon": 0.55,
+    "hoogte_factor": 0.55,
+    "_toelichting_tekenbreedte": "vangnet voor tekst die niet in data/glyph-maten.json staat; de cijfers, het graadteken en de minuutstreep worden sinds 15 okt 2026 gemeten in plaats van geschat"
+  },
+  "lagen": {
+    "aspecten_op_scherm": true,
+    "aspecten_op_papier": false
+  },
+  "biwiel": {
+    "_toelichting": "De **tweede stand** van hetzelfde wiel (sinds 2 november 2026): de huiscuplijnen en de cusplabels gaan een ring naar buiten en de band die vrijkomt is van de transitplaneten. `stralen` en `canvas` hier overschrijven die van het enkele wiel; al het overige (letters, lijnen, kleuren, maten) blijft gelden. De schakelaar op het hoofd wiel kiest tussen de twee standen. Deze stand is 8,4 procent kleiner bij dezelfde weergavebreedte: dat is de prijs van de extra ring, en de gebruiker die klikt verwacht een verandering. Waarom de cuspen naar buiten en niet de kaart in het klein: de cuspgraden blijven zo leesbaar en de radix krimpt 8,4 in plaats van 14 procent (zie de skill, wielopbouw route 4).",
+    "canvas": {
+      "breedte": 1092,
+      "hoogte": 1092
+    },
+    "midden": {
+      "x": 546,
+      "y": 546
+    },
+    "stralen": {
+      "buitenrand": 524,
+      "cuspband_binnen": 488,
+      "cusp_lijn_tot": 524,
+      "zodiakring_buiten": 442,
+      "transit_teken": 465,
+      "transit_tik_binnen": 442,
+      "transit_tik_buiten": 452,
+      "_toelichting": "cuspband 488-524 met de labels op 506; de vrijgekomen band 442-488 is van de transits, met de glyph op 465 (10 eenheden lucht aan beide kanten) en de tik op de echte graad van 442 tot 452. Het canvas groeit mee: buitenrand 524 plus dezelfde 22 eenheden wit = 546 als middelpunt, dus 1092.",
+      "_toelichting_cusp_lijn_tot": "De huiscuplijnen lopen in deze stand door tot de buitenrand, zodat ze de cusppositie in de band raken; in het enkele wiel stoppen ze op `cuspband_binnen`. Alleen deze stand heeft de sleutel, dus het enkele wiel blijft byte voor byte gelijk (3 nov 2026: de huiscusps lopen door en sluiten aan bij de huiscupposities). De tekengrenzen lopen in beide standen tot `zodiakring_buiten` en komen dus niet meer in de transitband."
+    }
+  }
+}

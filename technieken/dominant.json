@@ -1,0 +1,51 @@
+{
+  "id": "dominant",
+  "naam": "Dominante aspecten",
+  "jaar": 2,
+  "aan": true,
+  "standaard_zichtbaar": true,
+  "module": true,
+  "bron": [
+    {
+      "soort": "eigen programma",
+      "titel": "src/Calculation/AspectCalculator.php, de `dominant`-vlag (overgebracht in besluit T18)"
+    },
+    {
+      "soort": "lesmateriaal",
+      "titel": "CHTA jaar 2, les 2chta03a, Stappenplan voor horoscoopduiding - stap 2: \"Meest exacte aspect\""
+    }
+  ],
+  "invoer": {
+    "kaart": true
+  },
+  "rekent": [
+    {
+      "wat": "vlag",
+      "per": "aspect",
+      "regel": "hard en orb < 2 en het tweede punt is Ascendant of MC"
+    },
+    {
+      "wat": "vlag",
+      "per": "aspect",
+      "regel": "stap 2: hard, tussen twee planeten onderling (geen hoeken, knoop, pars of Chiron) en geen van beide planeten dominant; van de kandidaten wint de kleinste orb"
+    }
+  ],
+  "tekent": [
+    "een teken achter de orb in de aspectenlijst",
+    "een rood balletje achter de orb voor stap 2",
+    "twee knoppen in de kop van de lijst: Sorteren op | planeet | orb (planeet is de stand)",
+    "een noot onder de lijst"
+  ],
+  "duidt": [],
+  "conventies": [
+    "geen vet als markering: Astro Sans heeft één gewicht, dus de markering is een teken geworden",
+    "op papier verandert er niets: de trap op de A4 markeert geen dominante aspecten en geen stap 2",
+    "stap 2 kent geen maximale orb: van wat er ligt wint de kleinste (gemeten op 500 willekeurige kaarten: 1,0% heeft geen kandidaat, mediaan 5 kandidaten, orb van de winnaar mediaan 0,42 graden)",
+    "sorteren op orb geldt alleen voor de lijst op het scherm; de kaart, de trap en het A4-blad kennen geen volgorde"
+  ],
+  "ijking": {
+    "tegen": "de dominantregel uit het bronprogramma",
+    "gemeten": "op de proefkaart: dezelfde paren als de vlag in de kaart-JSON, 0 verschillen",
+    "tolerantie": "n.v.t. (vlag, geen afwijking mogelijk)"
+  }
+}

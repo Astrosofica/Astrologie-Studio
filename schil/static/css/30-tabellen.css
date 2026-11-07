@@ -1,0 +1,259 @@
+/* 30-tabellen.css
+   Aspecten, overzicht, standen, de kaartenlijst, de plaatszoeker, de Over-tab.
+
+   De volgorde van deze bestanden is de volgorde van de cascade en mag niet veranderen; binnen een
+   bestand staat niets door elkaar. */
+
+/* De aspectenlijst: de matrix is van het scherm af en staat alleen nog op de
+   A4, als trap. De opbouw is die van zijn eigen online programma (astro.astrosofica.nl):
+   de twee punten, het aspect, de orb en de stand van beide punten.
+   Zebra en een hover per regel, want 25 regels lezen zonder die twee als één blok.
+   De kolommen "Stand 1" en "Stand 2" zijn dezelfde stand als in het blok
+   onder het wiel, maar hier leest elke regel op zichzelf. */
+#lijstvak h2 { font-size: 12.5px; margin: 0 0 6px; font-weight: 600; color: var(--accent); }
+table.lijst { border-collapse: collapse; font-size: 13px; line-height: 22px;
+    font-variant-numeric: tabular-nums; width: 100%; }
+table.lijst th { font-size: 11.5px; font-weight: 600; color: #3f3f3f; text-align: left;
+    padding: 4px 8px; background: #f5f5f5; border-bottom: 1px solid #dcdcdc;
+    white-space: nowrap; }
+table.lijst td { padding: 0 8px; white-space: nowrap; border-bottom: 1px solid #f2f2f2; }
+table.lijst th.r, table.lijst td.r { text-align: right; }
+/* Zebra en hover zijn twee verschillende dingen. De band is neutraal en blijft
+   subtiel. De hover is de belangrijkste van de twee — die volgt de regel als een liniaal — en moet
+   dus uit het grijze segment: een frisse, lichte roodtint. Let op de betekenis: rood is in het wiel de
+   kleur van de harde aspecten en de B in deze lijst is rood; de tint is zo licht dat het er niet mee
+   botst, maar wordt dat ooit wel zo, dan is blauw (#cfe4f5) de neutrale vervanger. */
+table.lijst tbody tr:nth-child(even) td { background: #e2e5e2; }
+table.lijst tbody tr:hover td { background: #f8d7d0; }
+table.lijst .glyf { font-family: "Astro Sans", serif; font-size: 15px; }
+/* **Het vaste glyphvak**. Een glyph is tussen 7 en 12 px breed, dus een naam die er
+   direct achter staat begint telkens ergens anders: in de momentopname lopen de namen 5 px uiteen en
+   "AC" duwde de zijne 8 px verder. Hier staat elk teken in een vak van
+   16 px met 4 px lucht erna; alle namen beginnen op dezelfde x. De letters van Ascendant en MC zijn
+   geen tekens maar twee letters: die krijgen het gewone lettertype, kleiner en vet, zodat ze niet
+   breder zijn dan een glyph en ook echt als afkorting lezen. */
+.glyfvak { display: inline-block; width: 16px; text-align: center; margin-right: 4px; }
+.glyfvak .glyf { margin-right: 0; }
+/* `!important` is hier op zijn plaats en niet uit luiheid: op elke plek waar een glyph staat is de
+   maat al met een contextspecifieke regel gezet en die winnen het van een klasse-regel. De afkorting
+   moet in ál die contexten klein blijven, anders past hij nergens meer. */
+.glyf.letters { font-family: "Selawik", sans-serif !important; font-size: 9px !important;
+    font-weight: 600; letter-spacing: .4px; }
+table.lijst .naam { font-family: "Selawik", sans-serif; font-size: 13px; font-weight: 400; }
+/* Een zodiacstand blijft in Astro Sans: de cijfers zijn op de glyphs gebouwd, en op 14 px
+   leest hij lichter dan 12,5 px. Eén klasse voor elke plek waar een stand staat. */
+.pos { font-family: "Astro Sans", "Selawik", serif; font-size: 14px; font-variant-numeric: tabular-nums; }
+/* In de aspectenlijst staan de cijfers van een stand in dezelfde letter als de rest van de rij
+   (Selawik 13 px, gewicht 400) en alleen het zodiacteken in Astro Sans. Reden: Astro Sans is een
+   600-letter, dus een hele stand in Astro
+   Sans leest in deze tabel als vet tussen regular. De vaste breedtes komen uit de glyphmaten:
+   cijfers 0,513 em, ° 0,348 em, ' 0,275 em; het teken is 0,632–0,937 em en krijgt een eigen vak. */
+table.lijst .pos { font-size: 13px; }
+table.lijst .pos .dg, table.lijst .pos .mn { font-family: "Selawik", sans-serif; font-weight: 400; }
+table.lijst .pos .dg { display: inline-block; width: 21px; text-align: right; }
+table.lijst .pos .sg { display: inline-block; width: 16px; text-align: center;
+    font-family: "Astro Sans", serif; font-size: 15px; }
+table.lijst .pos .mn { display: inline-block; width: 19px; text-align: right; }
+.standen .retro, .retro { font-family: "Astro Sans", serif; color: #8a6d0b; }
+table.lijst .scheidend { color: #666; }
+table.lijst .buiten { color: var(--rood); font-size: 11px; }
+/* De orb-kolom: vaste vakken, zodat de orbs onder elkaar staan. `.mk` draagt de
+   markeringen (◆ dominant, B buiten teken), `.orb` de orb en `.scheidend` de A of S. */
+table.lijst .orbcel { white-space: nowrap; }
+table.lijst .orbcel .mk { display: inline-block; width: 12px; text-align: center; font-size: 11px; }
+table.lijst .orbcel .orb { display: inline-block; min-width: 34px; text-align: right; }
+table.lijst .orbcel .scheidend { display: inline-block; width: 10px; text-align: center; }
+/* Het dominante aspect: een teken, geen vet - Astro Sans heeft één gewicht. De tint is
+   --accent-diep, dezelfde rol als de links in de tab Over; op wit is dat ruim AA. */
+table.lijst .dom { color: var(--accent-diep); font-size: 11px; }
+/* Het meest exacte harde aspect: een rood balletje. Kleiner van opzet dan de diamant van de
+   dominante aspecten, zodat het geen tweede merkteken van dezelfde rang lijkt - maar een gevulde
+   cirkel leest bij dezelfde hoogte kleiner dan een ruit, dus het krijgt een paar tienden meer.
+   Op 12 px is de inkt 10 px breed en hoog, tegen 9 x 8 px voor de diamant op 11 px: even
+   zwaar, zonder hem te overstemmen. */
+table.lijst .orbcel .mk.exact { color: var(--rood); font-size: 12px; }
+.lijst-noot .exact { color: var(--rood); }
+/* De sorteerschakelaar in de kop van de aspectenlijst en van de standen van nu. Zonder de flexrij
+   zakte het groepje onder de kop; met `margin-left: auto` staat het rechts, waar je het zoekt en waar
+   het de telling niet in de weg zit. */
+#lijstvak h2.met-sorteer, #tr-nuvak h2.met-sorteer { display: flex; align-items: baseline; gap: 12px; }
+#lijstvak .sorteer, #tr-nuvak .sorteer { margin-left: auto; display: inline-flex; align-items: baseline;
+    gap: 0; font-size: 11px; font-weight: 400; color: #666; }
+/* De twee sorteerknoppen zijn één keuze met twee standen, net als de tijdvakknoppen in het
+   formulier: ze raken elkaar en alleen de tweede heeft geen eigen linkerkant, zodat er tussen de
+   twee één scheidslijn staat. De tussenruimte van de rij staat daarom op nul en de lucht na het
+   etiket komt van een marge - met een tussenruimte tussen de knoppen valt die linkerkant weg en
+   leest de rechterknop als een doos die aan de linkerkant openstaat. */
+#lijstvak .sorteer .sorteerlabel, #tr-nuvak .sorteer .sorteerlabel { margin-right: 6px; }
+.lijst-noot { font-size: 11.5px; color: #5f5f5f; margin: 8px 0 0; }
+table.groepen { border-collapse: collapse; font-size: 12.5px; }
+table.groepen th { text-align: left; font-weight: 400; color: #555; padding: 2px 12px 2px 0;
+    white-space: nowrap; vertical-align: top; }
+table.groepen td { padding: 2px 16px 2px 0; }
+/* Ruimte tussen de glyphs in de element- en kruisgroepen. De glyphs
+   staan zonder spatie achter elkaar; de marge doet het werk, zodat de ruimte overal gelijk is. */
+table.groepen td .glyf { margin-right: 10px; }
+table.groepen .glyf { font-family: "Astro Sans", serif; font-size: 16px; }
+table.groepen .hoeken { font-size: 11px; color: #666; }
+/* Zebra in de heerschappentabel, in dezelfde tint als de standen en de aspectenlijst. De kop staat
+   in een <thead>, zodat de banden bij de eerste huizenrij beginnen en niet al op de kop vallen.
+   Alleen de heerschappen: de elementen en kruisen zijn vier regels in een eigen kader, daar
+   voegt een band niets toe. */
+table.heerschappen tbody tr:nth-child(even) th,
+table.heerschappen tbody tr:nth-child(even) td { background: #e2e5e2; }
+.blokken { display: flex; gap: 24px; align-items: flex-start; flex-wrap: wrap; }
+.blokken h2 { font-size: 13px; margin: 0 0 6px; font-weight: 600; color: var(--accent); }
+/* De blokken van de Overzicht-tab staan onder elkaar: elementen en kruisen eerst, de huizen en
+   heerschappen eronder. `.stapel` is de buitenste container; `.blokken` blijft
+   binnen de heerschappen twee helften naast elkaar zetten. */
+.stapel > div + div { margin-top: 20px; }
+/* De elementen en de kruisen zijn twee losse blokken: het zijn twee
+   verschillende staten, geen aaneengesloten opsomming. Op het scherm staan ze naast elkaar onder
+   één kop, op papier onder elkaar onder diezelfde kop. Het lichte vlak en de rand maken van elk
+   een eigen blok; zonder dat lezen ze als één lijst met een tussenkop. */
+.tweekolom { display: flex; gap: 16px; align-items: flex-start; }
+.tweekolom .groep { background: #fafaf8; border: 1px solid #e6e6e3; border-radius: 5px;
+    padding: 7px 6px; }
+/* De noot is één lange regel: zonder grens rekt hij het blok op en past de heerschappentabel er
+   niet meer naast. */
+.noot { font-size: 11.5px; color: #5f5f5f; margin: 8px 0 0; max-width: 300px; }
+.cel { white-space: nowrap; }
+.cel .scheidend { color: #666; }
+.gegevens { font-size: 12.5px; }
+.gegevens dt { color: #666; float: left; clear: left; width: 132px; }
+.gegevens dd { margin: 0 0 2px 140px; }
+/* Het paneel is 380 px hoog: acht ruime rijen plus de regel eronder passen erin.
+   Die hoogte staat vast, zodat de onderkant niet verspringt als er een horoscoop bij komt of af
+   gaat; past het echt niet (een laag venster), dan krimpt dit vak mee zoals het altijd deed en
+   scrolt de lijst zelf. */
+.kaarten { display: flex; flex-direction: column; height: 380px; }
+.kaarten h2 { font-size: 12.5px; margin: 0 0 6px; font-weight: 600; color: var(--accent); }
+.kaartenlijst { flex: 1 1 auto; min-height: 0; overflow: auto; }
+.kaartenlijst .leeg { font-size: 12.5px; color: #888; }
+.leegvlak { margin: 0; padding: 24px 12px; text-align: center; font-size: 12.5px; color: #8a8a8a; }
+/* De exacte standen onder het wiel: graad, minuut en seconde plus het huis per punt. */
+.standen h2 { font-size: 12.5px; margin: 0 0 4px; font-weight: 600; color: var(--accent); }
+/* De standen op 14 px in rijen van 22 px, met de namen eromheen op 12,5. */
+.standen table { font-size: 12.5px; }
+.standen table td { padding: 2px 0; }
+/* De koppen binnen de toegevoegde blokken (Elementen en kruisen, Heerschappen) staan niet als
+   direct kind van een paneel en houden daardoor de webmaat. */
+#toevoegingen h2 { font-size: 13px; font-weight: 600; color: var(--accent); margin: 0 0 8px; }
+#toevoegingen .blokken h2 { font-size: 12.5px; }
+/* De twee blokken van de standentabel naast elkaar, maar niet ten koste van de tabel erin.
+   `flex: 1 1 0` met `min-width: 0` liet een kolom tot 0 px krimpen terwijl de tabel erin 180-216 px
+   nodig heeft; vanaf ongeveer 1210 px vensterbreedte schoven de twee tabellen dan over elkaar heen.
+   Met `flex-wrap` en een basis van 230 px wikkelt de tweede kolom
+   naar een eigen regel zodra er geen twee meer passen, en blijft de tabel heel. */
+.standen .kolommen { display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-start; }
+.standen .kolommen > div { flex: 1 1 230px; min-width: min(230px, 100%); }
+.standen table { border-collapse: collapse; font-size: 12.5px; width: 100%; }
+.standen td { padding: 0 5px; text-align: left; white-space: nowrap; line-height: 18px; }
+/* Dezelfde band als de aspectenlijst. Geen hover: de vier kolommen zijn
+   vier losse tabellen, dus een hover licht maar één kwart van de regel op en leest als een vlek —
+   en anders dan bij de aspectenlijst is hier geen lange regel om te volgen. De banden vallen
+   over de volle breedte gelijk, want elke kolom heeft dezelfde rijhoogte. */
+.standen tbody tr:nth-child(even) td { background: #e2e5e2; }
+.standen td.n { text-align: right; font-variant-numeric: tabular-nums; }
+.standen .retro { color: #8a6d0b; }
+.standen:empty { display: none; }
+/* Eén regel per kaart. Dit paneel toont alleen de acht nieuwste
+   (op "laatst bewaard", zie `toonKaarten`) en verwijst de regel eronder naar het venster met alle
+   horoscopen. De rijen zijn daarom iets ruimer (padding 4,5 in plaats van 2): acht rijen plus die
+   regel vullen het vaste vak van 380 px precies, zonder schuifbalk. */
+/* De scheidingslijn tussen de rijen is een contrastrijke tint. Structuur is belangrijk, geen accent -
+   groen tussen de rijen zou de aandacht naar zich toe trekken. */
+.kaartrij { display: flex; align-items: baseline; gap: 6px; padding: 3.5px 0;
+    border-bottom: 1px solid #b9c2ba; }
+.kaartrij:last-child { border-bottom: 0; }
+/* **Eén regel per horoscoop, en de naam is leidend** ("De lijst moet niet wrappen,
+   één regel per horoscoop. Naam is leidend, wat er meer bij kan is prettig. Pas wanneer de naam te
+   lang wordt voor de complete breedte gaan we de naam inkorten.").
+   De naam houdt dus zijn eigen breedte; de **meta krijgt de rest** en geeft binnen zichzelf het eerst
+   de plaats af, dan de tijd, dan de datum. Krimpt de naam, dan alleen omdat
+   hij op zichzelf al breder is dan de rij.
+   De sleutel zit in `flex: 1 1 0` op de meta: met een basis van 0 telt hij niet mee in de verdeling en
+   kan hij de naam dus niets afnemen. */
+.kaartnaam { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: 6px;
+    text-align: left; border: 0; background: none; padding: 1px 0;
+    color: var(--tekst); font-size: 13.5px; cursor: pointer; }
+.kaartnaam:hover .kaartnaaml { text-decoration: underline; }
+.kaartnaaml { flex: 0 1 auto; min-width: 0; overflow: hidden;
+    text-overflow: ellipsis; white-space: nowrap; }
+/* Binnen de metaregel gelden de krimpgewichten: de **plaats** geeft het eerst af,
+   dan de **tijd**, en de **datum** het laatst. Zonder die volgorde krimpt de datum als eerste
+   en dan leest "19-07…" als een fout in plaats van als een afkapping. */
+.kaartmeta { flex: 1 1 0; min-width: 0; display: flex; overflow: hidden;
+    white-space: nowrap; font-size: 11.5px; color: #777; }
+/* **Alleen de plaats levert in.** Datum en tijd staan op `flex: 0 0 auto`, want een half afgeknipte
+   tijd ("23:03:3") leest als een fout, terwijl een afgekapte plaats met een ellips leest als "er is
+   meer". Past de tijd niet meer, dan is er simpelweg geen plaats meer te zien. */
+.kaartmeta .m-plaats { flex: 0 1 auto; min-width: 0; overflow: hidden;
+    text-overflow: ellipsis; }
+.kaartmeta .m-tijd { flex: 0 0 auto; white-space: nowrap; }
+.kaartmeta .m-datum { flex: 0 0 auto; white-space: nowrap; }
+/* De ruimte tussen de drie stukken komt uit een marge en niet uit een spatie in de tekst: in een
+   flexrij wordt een leidende spatie weggeknipt, en dan plakt de tijd aan de datum. */
+.kaartmeta .m-tijd, .kaartmeta .m-plaats { margin-left: 5px; }
+/* De kop van het kaartenblok is alleen de titel: sorteren hoort in het venster met alle horoscopen,
+   niet hier. */
+.kaartenkop { display: flex; justify-content: space-between; align-items: baseline; margin: 0 0 5px; }
+.kaartenkop h2 { margin: 0; }
+/* De verwijzing onder de lijst naar het venster met alle horoscopen: een echte knop (dus met
+   toetsenbord te bereiken) die leest als een regel, niet als een knop. */
+.kaartenmeer { display: block; width: 100%; height: auto; margin: 6px 0 0; padding: 3px 0;
+    border: 0; border-radius: 0; background: none; font-size: 11.5px; color: var(--accent);
+    text-align: left; cursor: pointer; }
+.kaartenmeer:hover { text-decoration: underline; }
+.kaartenmeer[hidden] { display: none; }
+.kaartweg { border: 0; background: none; color: var(--rood); font-size: 15px; line-height: 1;
+    padding: 0 3px; cursor: pointer; }
+.kaartweg:hover { background: #f6e9ea; border-radius: 3px; }
+/* De keuzelijst van de plaatszoeker krijgt een eigen hoogte met een schuifbalk: zonder grens wordt
+   hij bij veel treffers zo hoog dat het formulier uit beeld zakt. Zeven rijen van ± 45 px is genoeg
+   om te kiezen; de sortering doet de rest en er valt niets weg. */
+.plaatsen { margin-top: 2px; max-height: 320px; overflow-y: auto; }
+.plaatsen:empty { display: none; }
+/* Een rij is een div met twee knoppen: de keuzeknop over de volle breedte en,
+   alleen bij een eigen plaats, een klein kruisje om hem uit eigen-plaatsen.tsv te halen. */
+.plaatsrij { display: flex; align-items: stretch; border: 1px solid #e6e6e3; border-top: 0;
+    background: #fff; }
+.plaatsrij:first-child { border-top: 1px solid #e6e6e3; }
+.plaatsrij:hover { background: #f4f7f5; }
+.plaatskies { flex: 1; min-width: 0; text-align: left; border: 0; background: none; font: inherit;
+    font-size: 13px; padding: 4px 7px; cursor: pointer;
+    height: auto; }
+.plaatsweg { border: 0; background: none; color: #a33; font-size: 15px; line-height: 1;
+    padding: 0 7px; cursor: pointer; align-self: center; }
+.plaatsweg:hover { background: #f6e9ea; border-radius: 3px; }
+.plaatsnaam { display: block; }
+.plaatsmeta { display: block; font-size: 11px; color: #777; }
+/* Het OpenStreetMap-blok in de keuzelijst: verschijnt alleen als de eigen lijst
+   niets geeft, met de bron erbij zoals de licentie (ODbL) vraagt. */
+.osmblok { border: 1px solid #e6e6e3; border-radius: 4px; padding: 6px 8px; background: #fbfbfa; }
+.osmmelding { font-size: 11.5px; color: #666; margin-bottom: 5px; }
+.osmzoek, .osmbewaar { font-size: 12px; padding: 3px 8px; border: 1px solid #cfcfca;
+    border-radius: 4px; background: #fff; cursor: pointer; }
+.osmzoek:hover, .osmbewaar:hover { background: #f2f5f2; }
+.osmbron { font-size: 10.5px; color: #8a8a86; margin-top: 4px; }
+.bron { font-size: 11px; color: #888; margin-top: 10px; }
+.over-versie { font-size: 12px; color: #666; margin: 0 0 10px; }
+/* De Over-tab: elke licentie en bronvermelding op één plek. Bewust smal en rustig —
+   dit is leeswerk, geen bedieningspaneel. */
+#dlg-over .paneel { max-width: 760px; }
+.over-inleiding { margin: 2px 0 4px; font-size: 13px; line-height: 1.5; }
+.over-blok { margin-top: 14px; }
+/* Geen vet als onderscheid: Astro Sans heeft één gewicht. De kop van een blok is daarom een
+   klein grijs label in kapitalen — dat leest als structuur zonder op gewicht te leunen. */
+.over-blok h3 { font-size: 11px; letter-spacing: .06em; text-transform: uppercase;
+    margin: 0 0 4px; color: #6b6b67; }
+.over-blok p { margin: 0 0 4px; font-size: 12.5px; line-height: 1.5; }
+.over-blok .over-stil { color: #777; }
+#dlg-over code { background: #f1f2ef; border-radius: 2px; padding: 0 3px; font-size: 12px; }
+/* Een link in lopende tekst is onderstreept: dat is de gewone hyperlink, en in tekst is een
+   hover-signaal vreemd. De streep zet Chromium standaard; hier is het een besluit, zodat geen enkele
+   reset hem later kan weghalen. De kleur
+   komt uit de ladder en is een tint dieper dan de koppen; :visited staat erbij omdat onze eigen
+   regel anders zou kunnen verliezen van de paarse standaard van de browser. */
+#dlg-over a { color: var(--accent-diep); text-decoration: underline; }
+#dlg-over a:visited { color: var(--accent-diep); }

@@ -1,0 +1,20 @@
+{
+  "_toelichting": "IJkpunt voor `schil/server.py --controle`. Bewust een datum VOOR 1 januari 1970: op Windows weigerde `datetime.fromtimestamp` negatieve tijdstempels met 'OSError: [Errno 22] Invalid argument', waardoor elke horoscoop van voor 1970 omviel terwijl dezelfde kaart op Linux gewoon rekende. Met een ijkpunt uit 1985 kwam dat er niet uit. Sinds 20 oktober 2026 rekent `kern/tijd.van_epoch` zonder de C-functie, en deze controle bewaakt dat.",
+  "kaart": {
+    "naam": "Controle",
+    "datum": "1963-07-19",
+    "tijd": "16:51:26",
+    "tijdzone": "Europe/Amsterdam",
+    "plaats": "Controleplaats",
+    "lat": 51.675,
+    "lon": 4.27917,
+    "huizenstelsel": "K"
+  },
+  "tolerantie": 0.001,
+  "standen": {
+    "Zon": 116.25476933054009,
+    "Maan": 100.66624792960182,
+    "Ascendant": 242.44960493378488,
+    "MC": 178.75534987282396
+  }
+}

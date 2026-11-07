@@ -1,0 +1,29 @@
+{
+  "profiel": "jaar2",
+  "jaar": 2,
+  "naam": "Jaar 2 - de horoscoop leren lezen en de tijd erbij",
+  "toelichting": "Wat jaar 2 aan jaar 1 toevoegt: Chiron (berekend, standaard getoond), de dominantmarkering en stap 2 in de aspectenlijst, de solaar (een gewone horoscoop met een jaar en een plaats als invoer), de transits (met een eigen formulier: tijdvak en selectie) en de progressies (dezelfde vorm met de leeftijd als tijdas). Midpunten en spiegelpunten horen bij jaar 3 (T48: jaar 2 draagt alleen wat het zelf toevoegt; de schil voegt jaar 1 en jaar 2 samen).",
+  "technieken": [
+    {
+      "id": "chiron",
+      "aan": true
+    },
+    {
+      "id": "dominant",
+      "aan": true
+    },
+    {
+      "id": "solaar",
+      "aan": true
+    },
+    {
+      "id": "transits",
+      "aan": true
+    },
+    {
+      "id": "progressies",
+      "aan": true
+    }
+  ],
+  "let_op": "De schil leest dit bestand alleen als de gebruiker de module van jaar 2 heeft aangevinkt. Jaar 1 staat altijd aan en blijft het fundament (T48)."
+}

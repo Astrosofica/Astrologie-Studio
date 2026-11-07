@@ -1,0 +1,62 @@
+{
+  "id": "transits",
+  "naam": "Transits — de tijd op de radix",
+  "jaar": 2,
+  "aan": true,
+  "module": true,
+  "tab": {
+    "id": "transits",
+    "naam": "Transits",
+    "formulier": true
+  },
+  "bron": [
+    {
+      "soort": "eigen programma + literatuur",
+      "titel": "Robert Hand, Transits (literatuurlijst les 2-01); vorm uit github.com/Astrosofica/Horoscoopberekening"
+    }
+  ],
+  "invoer": {
+    "kaart": true,
+    "periode": true,
+    "selectie": [
+      "lichamen",
+      "aspecten",
+      "radixdoelen"
+    ],
+    "opties": {
+      "huis_ingress": "de twaalf cuspen in één keer",
+      "stations": "elk lichaam dat van richting keert"
+    }
+  },
+  "rekent": [
+    {
+      "wat": "standen",
+      "hoe": "de tien lichamen op één moment, met hun radixhuis"
+    },
+    {
+      "wat": "doorgangen",
+      "hoe": "één scan per lichaam over het venster, alle doelen in dezelfde doorgang, bisectie voor het moment"
+    },
+    {
+      "wat": "station",
+      "hoe": "centrale differens over ±43 minuten (de snelheid van swisseph is dicht bij nul zelf ruis)"
+    }
+  ],
+  "tekent": [
+    "lijst"
+  ],
+  "duidt": [],
+  "conventies": [
+    "geen orb: de lijst toont tijd, niet wat er binnen een orb staat",
+    "aspecten alleen tussen planeten onderling en tussen planeten en de hoeken; geen knoop, geen pars, geen Chiron (T42)",
+    "zeven hoeken: 0, 45, 60, 90, 120, 135, 180 — de 150 doet niet mee",
+    "de tijd in de lijst is de kloktijd van de kaart, tot op de minuut",
+    "de momentopname gebruikt de radix-huizen en toont de hoeken van dit moment niet (zo doet de PHP-versie het ook)",
+    "de standaardperiode per lichaam is een invulhulp, geen plafond"
+  ],
+  "ijking": {
+    "tegen": "een seconde-scan, per soort één geval (aspect, cuspkruising, station)",
+    "gemeten": "het moment valt binnen het seconde-vak van de scan (0,13–0,37 s van de rand), de stand 0,00000\" van het punt, en halveert de basislijn bij een station dan schuift het moment 0,11 s",
+    "tolerantie": "1 s tussen scan en bisectie; 0,01\" tussen stand en gevoelig punt; 2 s voor de basislijn-gevoeligheid van een station"
+  }
+}

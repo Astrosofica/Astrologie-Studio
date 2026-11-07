@@ -1,0 +1,47 @@
+{
+  "id": "wiel",
+  "naam": "Het wiel - tekenen",
+  "jaar": 1,
+  "aan": true,
+  "bron": [
+    {
+      "soort": "eigen ontwerp",
+      "titel": "de afdruk-spec uit de afdruk van een commercieel programma (besluit T11b) en de tekenstudie horoscoop-tekening"
+    }
+  ],
+  "invoer": {
+    "geboorte": false,
+    "kaart": true,
+    "opties": {
+      "aspecten": [
+        "aan",
+        "uit"
+      ]
+    }
+  },
+  "rekent": [],
+  "tekent": [
+    "wiel",
+    "tekens",
+    "graad-en-minuut-op-het-wiel",
+    "huiscuspen",
+    "huisnummers",
+    "aspectlijnen"
+  ],
+  "duidt": [],
+  "conventies": {
+    "orientatie": "Ascendant links, MC boven",
+    "sectoren": "de sectormaat is een instelling in teken/spec.json (orientatie.sectoren): de echte graden (standaard, zoals de proefafdruk met eigen graden) of even brede sectoren van 30 graden",
+    "op-papier": "geen aspectlijnen (besluit T14)",
+    "tekentinten": "elk teken in de zodiakring heeft op het scherm de tint van zijn element: Vuur #F3D4CC, Aarde #D2BC80, Lucht #D2E8FB (blauw), Water #B0D5BB (groen); in teken/spec.json onder kleuren.element. De vier liggen op een helderheidsladder (L* 87 / 77 / 91 / 82) zodat ze ook zonder kleur verschillen; de afdruk zet de tintlaag uit",
+    "graadverdeling": "de zodiakring heeft een verdeling per 1, 5 en 10 graden: stralen.zodiak_tik.graad 3, .kort 6, .lang 12. Kleuren: de 5- en 10-graden-streepjes #111111, de fijne verdeling #333333 (niet lichter: de tikjes liggen op de tekentinten, waar een lichtgrijs wegvalt), de tekengrens #333333",
+    "huislijnen": "de vier assen (huis 1 en 7 = Asc-Desc, 4 en 10 = MC-IC) staan op #111111 en de acht andere huislijnen op #9a9a9a; deze twee gaan wel mee in de afdruk",
+    "font": "de 34 astrologie-glyphs komen uit StarfisherUni (Kenneth Hirst, 2014; SIL OFL 1.1 voor alles boven tekencode 127) op 1,185x, met Steenbok uit capricornalt (U+E021) en Pluto uit plutoalt2 (U+E023); letters, cijfers, graadteken en minuutstreep uit Source Sans 3 op gewicht 600. cusp_teken staat op 20 (bij 22 raakt het Steenbok-stukje de binnenrand). Gebouwd met data/maak-font.py; licentie in data/fonts/LICENTIE-AstroSans.txt.",
+    "buitenrand": "de buitenste cirkel: lijnen.buitenrand 1.0 en kleur #9a9a9a (kleuren.buitenrand); de straal blijft 478. cuspband 36: cuspband_binnen 442 en zodiak_teken 421, de getinte ring 42 breed. Gemeten: 0 botsingen, 4,2 lucht aan elke kant, ringglyphs krapst 2,05 van hun tikje (Steenbok)."
+  },
+  "ijking": {
+    "tegen": "de afdruk van een commercieel programma op 200 dpi, nagemeten op de hoeken van de cusplijnen",
+    "gemeten": "de twaalf cusplijnen liggen in de print op 30 graden uit elkaar, met Asc links en MC boven; de vier hoekpunten op precies 90/180/270/0. Onzekerheid: mijn meting laat voor cusp 11 3,3 graden afwijking zien, dus of dat programma per kwadrant schaalt in plaats van vaste 30 graden is niet zeker",
+    "tolerantie": "n.v.t. (vormgeving)"
+  }
+}

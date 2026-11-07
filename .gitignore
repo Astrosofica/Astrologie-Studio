@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+drafts/
+data/osm-cache.json
+uitgave/
+dist/
+build/
+controle-uitkomst.txt
+bouw/versie.iss
+bouw/versie-info.txt
+delen/
+# Nooit publiceren: de afdrukken en proefwielen van derden (met naam en geboortegegevens). Ze staan
+# buiten de repo in ../astrologie-studio-ijking/referentie/. Deze regels weren een kopie die per
+# ongeluk teruggezet wordt - de dagelijkse back-up doet `git add -A` en zou hem anders meecommitten.
+prints/
+data/proefkaarten/

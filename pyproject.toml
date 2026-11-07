@@ -1,0 +1,42 @@
+# De afspraken over stijl en netheid, op één plek (5 nov 2026).
+#
+# Waarom dit bestand er is: zonder afspraken gaf `ruff` 2070 meldingen over deze codebase, waarvan
+# 2037 "regel te lang". Die 2037 zijn geen fouten maar een bewuste stijl (lange regels, Nederlandse
+# commentaren, uitleg naast de code). Ze verdronken de drieëndertig die er wél toe deden. Met deze
+# instellingen is de uitkomst in één oogopslag "schoon", en blijft hij dat: een nieuwe melding is dan
+# echt iets.
+#
+# Draaien:  uvx ruff check .
+# De regelafstand van 120 is niet gekozen omdat het mooi is, maar omdat de code er al zo uitziet:
+# de langste regels zitten op 118 (de SVG-regels in `teken/wiel.py`). Smaller zetten - 110 was het
+# voorstel in de doorlichting - vraagt een herschrijfronde van duizenden regels, en de vier die dan
+# overblijven zijn cirkels in de tekening die je niet wilt afbreken om een teller.
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+# De ijk-map bevat eenmalige analyses met een datum in de naam; die zijn naslag, geen code die
+# meegaat. De efemeriden zijn gegevensbestanden, geen Python.
+extend-exclude = [
+    "efemeriden",
+    "uitgave",
+    "dist",
+    "build",
+]
+
+[tool.ruff.lint]
+# E/F/W is correctheid, B/C4/SIM/RET is geur (dode of dubbelzinnige constructies). Geen ISC, geen
+# Q, geen D: de stijl van dit project is Nederlands commentaar en geen docstringplicht per functie.
+select = ["E", "F", "W", "B", "C4", "SIM", "RET"]
+# C408: `dict(naam="x")` is hier een bewuste keuze boven `{"naam": "x"}` - het leest als een zin en
+# staat in deze codebase overal zo. E701/E702: een enkele regel met twee opdrachten komt voor waar
+# dat de bedoeling is (een vlag zetten en doorgaan). B904: `raise InvoerFout([...])` vanuit een
+# `except` is hier de bedoeling - de melding in gewone taal *is* het antwoord, de oorspronkelijke
+# fout is een implementatiedetail. B007: `slag` in `solaar.py` wordt na de lus gebruikt (het aantal
+# slagen van de iteratie), en dat is een geldig patroon. SIM112: Windows levert zijn omgevings-
+# variabelen nu eenmaal als `ProgramFiles(x86)`. RET50x en SIM105/SIM108/SIM115/SIM401: stijlkeuzes
+# die de code leesbaarder maken dan het alternatief.
+ignore = ["B007", "B904", "C408", "E701", "E702", "RET502", "RET503", "RET504",
+          "SIM105", "SIM108", "SIM112", "SIM115", "SIM401"]
+

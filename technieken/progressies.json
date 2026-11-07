@@ -1,0 +1,65 @@
+{
+  "id": "progressies",
+  "naam": "Progressies — de tijd in de kaart",
+  "jaar": 2,
+  "aan": true,
+  "module": true,
+  "tab": {
+    "id": "progressies",
+    "naam": "Progressies",
+    "formulier": true
+  },
+  "bron": [
+    {
+      "soort": "eigen programma + literatuur",
+      "titel": "CHTA les 22a/22b (prenatale progressies); ProgressionCalculator en ProgressionEventCalculator uit github.com/Astrosofica/Horoscoopberekening"
+    }
+  ],
+  "invoer": {
+    "kaart": true,
+    "periode": true,
+    "selectie": [
+      "lichamen",
+      "aspecten",
+      "radixdoelen"
+    ],
+    "opties": {
+      "huis_ingress": "de twaalf cuspen in één keer",
+      "teken_ingress": "de twaalf tekenbeginnen",
+      "stations": "elk lichaam dat van richting keert"
+    }
+  },
+  "rekent": [
+    {
+      "wat": "standen",
+      "hoe": "de tien lichamen op het progressieve moment (geboorte + leeftijd in dagen), met de Ascendant en MC als drift, elk in hun radixhuis"
+    },
+    {
+      "wat": "doorgangen",
+      "hoe": "dezelfde scan en bisectie als de transits, maar over de leeftijd in plaats van over de kalender"
+    },
+    {
+      "wat": "drift",
+      "hoe": "de Ascendant en MC op hele leeftijden uit de huizenrekening, daartussen een rechte lijn — binnen één progressief jaar draait de Asc de hele dierenriem rond"
+    }
+  ],
+  "tekent": [
+    "lijst",
+    "wiel"
+  ],
+  "duidt": [],
+  "conventies": [
+    "de sleutel is 1 dag efemeride = 1 jaar leven, met 365,24219893 dagen per jaar (dezelfde waarde als de PHP-versie)",
+    "geen orb: de lijst toont het moment van exactheid, tot op de seconde",
+    "zeven hoeken: 0, 45, 60, 90, 120, 135, 180 (dezelfde set als de transits)",
+    "de Ascendant en MC zijn drifts en geen standen; ze kunnen wel als bewegend lichaam in de lijst",
+    "de huizen waarin gelezen wordt zijn de geboortehuizen, niet die van het progressieve moment",
+    "de leeftijd is de maat en de datum is de vindplaats: elke regel draagt allebei",
+    "een venster vóór de geboorte is toegestaan (de prenatale kant), maar de techniek daarvan is een volgende fase"
+  ],
+  "ijking": {
+    "tegen": "de eigen efemeride (planeten), de huizenrekening (drift), een halve stap (volledigheid) en het draaiende PHP-programma (kruisproef)",
+    "gemeten": "veertig standen 0,000000000°; drift op hele leeftijden exact en tussen de jaarpunten glad (0,54° per kwart jaar); 251 aspecten 0,000000051° na exact; halve stap geeft dezelfde 273 regels; twaalf standen en zes gebeurtenissen gelijk aan astro.astrosofica.nl",
+    "tolerantie": "1e-6° op het gevonden moment; 1 boogseconde tegen het PHP (dat op hele seconden afrondt)"
+  }
+}

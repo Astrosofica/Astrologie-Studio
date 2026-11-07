@@ -1,0 +1,258 @@
+/* 40-afdruk.css
+   Het A4-blad, de bi-afdruk en de twee lijsten op papier. */
+
+#afdruk { display: none; }
+#afdruk.vast { display: block; }
+/* De app toont het vel als preview, niet om op het scherm te lezen. Op het scherm wordt het blad
+   geschaald met `zoom`: dat schaalt ook de layouthoogte mee, terwijl een `transform` de
+   gereserveerde ruimte laat staan en de pagina dus blijft scrollen. De schaal komt uit JS
+   (`schaalAfdruk`) en geldt alleen op het scherm; op papier is het vel gewoon 1:1. */
+@media screen {
+  #tab-afdruk .a4 { zoom: var(--a4-zoom, 0.62); }
+}
+/* Zonder locatie in de instellingen is er nog niets gerekend: zeg dat in plaats van twee lege
+   tabbladen te tonen. */
+#afdruk:empty, #lijstvak:empty, #toevoegingen:empty { display: block; color: #888; font-size: 13px; }
+#afdruk:empty::before { content: "Er is nog geen horoscoop berekend: het afdrukblad volgt na Berekenen of na het openen van een bewaarde horoscoop."; }
+#lijstvak:empty::before { content: "Er is nog geen horoscoop berekend: de aspectenlijst volgt na Berekenen of na het openen van een bewaarde horoscoop."; }
+#toevoegingen:empty::before { content: "Er is nog geen horoscoop berekend: de element- en kruisverdeling en de heerschappen volgen na Berekenen of na het openen van een bewaarde horoscoop."; }
+
+/* Wat er staat nadat je Bestand > Afsluiten hebt gekozen: de server is gestopt, dus dit is geen
+   scherm van de app meer maar een afscheid in dezelfde stijl. */
+.afgesloten { display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; background: var(--vlak, #f7f7f5); color: var(--tekst, #222);
+    font-family: "Segoe UI", system-ui, sans-serif; padding: 24px; box-sizing: border-box; }
+.afgesloten > div { max-width: 460px; text-align: center; }
+.afgesloten h1 { font-size: 19px; font-weight: 600; margin: 0 0 10px; }
+.afgesloten p { font-size: 14px; line-height: 1.5; margin: 0 0 8px; }
+.afgesloten p.klein { font-size: 12.5px; color: #666; }
+.a4 { width: 210mm; height: 297mm; padding: 12mm; background: #fff; margin: 0 auto;
+    border: 1px solid #ddd; box-shadow: 0 1px 4px rgba(0,0,0,.12); position: relative; }
+/* Losse lagen op het blad, geen rij blokken. Het wiel heeft de hoofdrol; de gegevens liggen in de
+   bovenhoeken en de trap en de elementen in de onderhoeken, waar het wiel geen ruimte nodig heeft. */
+/* De insets staan hier expliciet op 12 mm: in deze Chrome-versie rekent `left: 0` bij een
+   absoluut kind tegen de rand van het blad in plaats van tegen de binnenmarge, en dan valt de
+   tekst buiten de marge. */
+/* De gegevens in de hoeken zijn een fractie groter geworden nadat het wiel zakte. De blokken mogen
+   tot ±35 mm doorlopen: de ring van het wiel begint pas op 40 mm. De persoonlijke kolom is 54 mm
+   breed zodat de coördinatenregel op één regel past. */
+/* De afdruk blijft in Astro Sans: die heb je op papier goedgekeurd en bevroren, en een ander font
+   verandert de regellengtes en dus de blokhoogtes. Het scherm volgt Selawik, het vel niet. */
+#afdruk { font-family: "Astro Sans", "DejaVu Sans", serif; }
+/* De persoonlijke gegevens linksboven. De breedte is 134 mm: bij 54 mm wikkelt de plaatsnaam naar een
+   tweede regel terwijl er rechts 85 mm leegte ligt tot het technische blok.
+   134 mm geeft links 12 mm marge en rechts 6 mm lucht voor `.a4-tech` (dat op 12 mm van de
+   rechterrand staat en 46 mm breed is, dus begint op 152 mm); een plaatsnaam mag nu bijna 2,5 keer
+   zo lang zijn voordat hij nog eens wikkelt. */
+.a4-pers { position: absolute; left: 12mm; top: 12mm; width: 134mm; font-size: 3.5mm; line-height: 1.3;
+    z-index: 2; }
+.a4-tech { position: absolute; right: 12mm; top: 12mm; width: 46mm; text-align: right;
+    font-size: 3.5mm; line-height: 1.3; z-index: 2; }
+/* Het wiel tekent een wit vlak van 1000 x 1000 (150 mm) en dekt daarmee de gegevens in de
+   bovenhoeken af; de tekst moet dus boven de tekening liggen. */
+/* Het wiel mag een fractie naar beneden zodat de gegevens in de bovenhoeken groter kunnen.
+   Van 28 naar 36 mm; de tekening begint pas 4 mm onder de doos (de ring reikt tot 0,478 van de
+   breedte), dus de gegevens krijgen ±8 mm meer hoogte. */
+/* Het wiel staat lager (36 mm) en is daarmee groot: 180 mm. Hoger kan niet zonder de trap te
+   raken — bij 185 vallen drie trapcellen binnen de buitenrand. */
+/* De tekening zet zelf een wit vlak van 1000 x 1000 neer. Dat vierkant dekte de bovenkant van de
+   trap af en stak als witte kaart over de trap heen. Met `border-radius: 50%` plus
+   `overflow: hidden` valt dat vlak weg en houdt het wiel geen hoeken meer over die over iets heen
+   kunnen vallen. De tekening zelf reikt tot 0,478 van de doos, dus de cirkel van 50% knipt niets
+   van het wiel af. */
+.a4-wiel { position: absolute; right: 12mm; top: 36mm; width: 180mm; z-index: 1;
+    border-radius: 50%; overflow: hidden; }
+/* Zonder deze regel tekent de SVG zich op zijn eigen maat en loopt hij van het blad af. */
+.a4-wiel svg { display: block; width: 100%; height: auto; }
+/* De naam in de kerncirkel is op papier dubbel: hij staat al linksboven. Het is het enige directe
+   <text>-kind van de tekening; alle andere tekst zit in groepen. */
+.a4 .wiel svg > text { display: none; }
+/* De buitenste cirkel — de buitenrand van de cusp-positieband — gaat alleen op papier weg, zodat
+   het wiel open lijkt en er ruimte is om zelf aspectlijnen in te tekenen. De wiel-tab van de app
+   houdt hem: dit is de klasse die `teken/wiel.py` al op die cirkel zet, dus de tekening zelf
+   verandert niet. */
+.a4 .wiel svg circle.buitenrand { display: none; }
+/* De trap linksonder en de element- en kruisverdeling rechtsonder: samen de onderste laag, die
+   onder de wielrand door schuift omdat een trap in zijn bovenhoek leeg is. Ze liggen boven het
+   wiel (z-index 3 en 2 tegen 1): de cellen zijn transparant, dus waar de trap leeg is blijft het
+   wiel zichtbaar — en de gegevens van de trap winnen het altijd van de tekening. */
+.a4-trap { position: absolute; left: 12mm; bottom: 12mm; flex: 0 0 auto; z-index: 3; }
+/* --- Het vel van de bi-stand ---------------------------------------------------
+   Een eigen ontwerp, geen variant met een ander wiel erin: trap en element-/kruisverdeling
+   verdwijnen, en in hun plaats komen het moment en de standen van de transits met hun radixhuis.
+   Het wiel houdt zijn 180 mm en begint op 36 mm; daaronder ligt het moment als eigen regel en daar
+   weer onder de tabel in twee kolommen. */
+/* Het wiel van dit vel is 186 mm: de volle breedte tussen de marges (210 - 12 - 12). De 6 mm die het
+   groter is dan op het radix-vel komen uit de ruimte die de trap daar innam. Meer kan niet — breder
+   dan 186 mm bestaat niet op A4, en het is vierkant. */
+.a4-wiel.groot { right: 12mm; width: 186mm; }
+.a4-moment { position: absolute; left: 12mm; right: 12mm; top: 225mm; font-size: 3.8mm;
+    line-height: 1.25; }
+.a4-moment .wat { color: #666; }
+.a4-transits { position: absolute; left: 12mm; right: 12mm; top: 231mm; display: flex;
+    gap: 14mm; font-family: "Astro Sans", "DejaVu Sans", serif; }
+.a4-transits table { flex: 1 1 0; border-collapse: collapse; font-size: 3.4mm; line-height: 1.42; }
+.a4-transits td { padding: 0; vertical-align: baseline; }
+.a4-transits td.pos { text-align: right; white-space: nowrap; }
+/* Het huis is de tweede vraag, niet de eerste: kleiner dan de stand, zodat het oog eerst
+   planeet + graad leest en het huis daarna. Zelfde inkt, andere rangorde. */
+.a4-transits td.huis { text-align: right; white-space: nowrap; width: 16mm; font-size: 3mm;
+    color: #333; }
+.a4-transits .retro { font-size: 3.1mm; color: #222; }
+/* Inkt, niet vlak: 3 mm grijs #666 valt op een laser uiteen in spikkels. Deze regel is de enige uitleg
+   op het vel, dus hij moet leesbaar blijven — zwart, en een tiende millimeter groter. */
+.a4-hint { position: absolute; left: 12mm; right: 12mm; bottom: 12mm; font-size: 3.1mm;
+    color: #444; }
+/* De kiezer in de regel boven het vel: hij hoort bij het voorbeeld, niet op papier. */
+.drukschakel { height: 22px; margin-left: 6px; padding: 0 4px; font-family: "Segoe UI", Selawik, sans-serif;
+    font-size: 12px; color: #333; background: #fff; border: 1px solid #c9c9c9; border-radius: 3px;
+    cursor: pointer; }
+.drukschakel[hidden] { display: none; }
+.drukschakel.aan { color: var(--accent); border-color: var(--accent); }
+@media print { .drukschakel { display: none !important; } }
+/* Het kader is adaptief: het hugt de inhoud en groeit mee tot 64 mm — verder kan niet, want bij
+   198 - 64 = 134 mm raakt het de trap. */
+.a4-toev { position: absolute; right: 12mm; bottom: 12mm; width: auto; max-width: 64mm; z-index: 2;
+    box-sizing: border-box; border: 1px solid #777; padding: 2.2mm 2.4mm 1.6mm; }
+/* Cel 9,2 mm (de maat van een commercieel programma), glyph 4,2 en orb 3,0 mm. */
+.a4 table.trap { border-collapse: collapse; font-family: "Astro Sans", serif; }
+.a4 table.trap td { width: 9.2mm; height: 9.2mm; padding: 0; border: 1px solid #555;
+    text-align: center; vertical-align: middle; line-height: 1.05; }
+.a4 table.trap td.diag { background: #f4f4f1; font-size: 4.4mm; }
+.a4 table.trap .g { display: block; font-size: 4.2mm; }
+.a4 table.trap .o { display: block; font-family: "Astro Sans", sans-serif; font-size: 3.0mm;
+    letter-spacing: -0.05mm; }
+/* De kop boven de element- en kruisverdeling: tussen de zware titel en het te kleine label in. */
+.a4 .stapel h2 { font-size: 11.5px; font-weight: 700; color: #222; margin: 0 0 1.2mm;
+    letter-spacing: 0.01em; }
+/* Elementen en kruisen zijn twee tabellen; zonder vaste labelbreedte begint de glyphkolom van de
+   tweede 6 mm verder naar rechts. `min-width` erbij, anders knijpt de autolayout de labelkolom leeg
+   zodra een rij breder wordt en raken de twee tabellen weer uit lijn. */
+.a4 table.groepen th { width: 17mm; min-width: 17mm; }
+/* `anywhere` laat de waarde-cel ook tússen de glyphs afbreken, zodat een rij met veel lichamen in
+   het kader past in plaats van de tabel breder te duwen. */
+.a4 table.groepen td { overflow-wrap: anywhere; }
+/* De regels mogen compacter op elkaar. */
+.a4 table.groepen th, .a4 table.groepen td { padding-top: 0; padding-bottom: 0; }
+.a4 table.groepen { font-size: 11px; }
+.a4 table.groepen td .glyf { margin-right: 6px; }
+/* Het papier houdt zijn eigen kopkleur: de koppen op het scherm zijn in het accent, en deze twee
+   regels houden de A4 op #222. Ze staan er allebei omdat de schermregel (.blokken h2) even zwaar
+   weegt en anders door de volgorde zou winnen. */
+.a4 .blokken h2 { font-size: 11.5px; margin-bottom: 1mm; color: #222; }
+/* Op papier staan de elementen en de kruisen onder elkaar onder één kop, zonder kaartvlak: de
+   afdruk is zwart-wit en een grijs kader zou daar als een tabelrand lezen. */
+.a4 .tweekolom { display: block; }
+.a4 .tweekolom .groep { background: none; border: 0; border-radius: 0; padding: 0; }
+.a4 .tweekolom .groep + .groep { margin-top: 2mm; }
+.a4 p { margin: 1mm 0 0; }
+@media print {
+  /* De weergavegrootte is voor het scherm; een A4 blijft 210 mm. */
+  html { zoom: 1 !important; }
+  @page { size: A4; margin: 0; }
+  /* Het geraamte hoort niet op papier: een afdruk is het A4-blad, niet het venster. */
+  html, body { height: auto; display: block; overflow: visible; background: #fff; }
+  .menubalk, .werkbalk, .statusbalk { display: none !important; }
+  body { background: #fff; }
+  /* De vaste schermbreedte geldt niet op papier: het A4-blad is 210 mm. Ook de schermpadding eraf. */
+  .wrap { max-width: none; margin: 0; padding: 0; }
+  .wrap > .form, .tabs, .optie, #tab-wiel, #tab-overzicht, #tab-aspecten, .zijkolom,
+  .dialoogvlak { display: none !important; }
+  /* De twee lijsttabbladen horen er ook niet op. In de lijststand komen ze terug, maar alleen de
+     tab die je afdrukt. */
+  #tab-transits, #tab-progressies { display: none !important; }
+  .wrap, .werk, .tab.actief { display: block !important; overflow: visible !important;
+    border: 0 !important; padding: 0 !important; background: none !important; }
+  /* Ook als je op een andere tab staat: Ctrl+P hoort het A4-blad te printen. */
+  #tab-afdruk { display: block !important; }
+  #afdruk, #afdruk.vast { display: block !important; }
+  #afdruk:empty { display: none !important; }
+  /* Het blad houdt zijn eigen hoogte: de lagen staan absoluut, dus zonder hoogte zou het blad op
+     papier inklappen en de trap en de gegevens buiten de pagina vallen. */
+  .a4 { border: 0; margin: 0; width: 210mm; height: 297mm; padding: 12mm; }
+  #laag-aspecten, #laag-zodiak-tint { display: none !important; }
+}
+/* De kop van het vel (naam, geboorte, tijdvak, selectie) staat in de thead van de lijst en hoort
+   alleen op papier te staan. */
+table.lijst tr.drukkop { display: none; }
+/* ---------- De transitlijst als vel papier ----------
+   `Bestand > Afdrukken` print het A4-wiel en blijft dat doen. Dit is de tweede route: alleen
+   `drukLijstAf()` zet de klasse `druk-lijst` op de body, en alleen dan gelden deze regels. */
+@media print {
+  /* Een eigen pagina met eigen marges. `@page` kun je niet aan een klasse hangen, daarom een
+     benoemde pagina. */
+  @page lijst {
+    size: A4 portrait;
+    margin: 14mm 12mm 16mm;
+    @bottom-right { content: "pagina " counter(page) " van " counter(pages);
+                    font-family: "Selawik", sans-serif; font-size: 8pt; color: #555; }
+  }
+  body.druk-lijst .menubalk, body.druk-lijst .statusbalk, body.druk-lijst .werkbalk,
+  body.druk-lijst .wrap > .form, body.druk-lijst .tabs, body.druk-lijst .zijkolom,
+  body.druk-lijst #tab-wiel, body.druk-lijst #tab-overzicht, body.druk-lijst #tab-aspecten,
+  body.druk-lijst #tab-afdruk, body.druk-lijst .a4, body.druk-lijst #afdruk,
+  body.druk-lijst .tr-formulier, body.druk-lijst .tr-samenvatting, body.druk-lijst .tr-sub,
+  body.druk-lijst .tr-voortgang {
+    display: none !important;
+  }
+  body.druk-lijst .wrap, body.druk-lijst .werk, body.druk-lijst .tab.actief,
+  body.druk-lijst #tr-lijstvak, body.druk-lijst #tr-stand-lijsten {
+    display: block !important; overflow: visible !important; height: auto !important;
+    padding: 0 !important; border: 0 !important; background: none !important;
+    page: lijst;
+  }
+  /* De twee lijsttabbladen zijn bij het A4-blad verborgen; in de lijststand komt alleen de tab die
+     je afdrukt terug. */
+  body.druk-lijst #tab-transits.actief, body.druk-lijst #tab-progressies.actief {
+    display: block !important;
+  }
+  /* De flexrij van het paneel is voor het scherm; op papier moet de tabel gewoon doorlopen en
+     over de paginagrens heen kunnen breken. */
+  body.druk-lijst .tr-rij, body.druk-lijst .tr-rij > .tr-lijst {
+    display: block !important; min-height: 0 !important; margin: 0 !important; }
+  body.druk-lijst .tr-scroll { overflow: visible !important; }
+  body.druk-lijst .paneel { border: 0 !important; box-shadow: none !important;
+    background: none !important; padding: 0 !important; }
+  /* De kop van het vel: twee regels, en hij herhaalt zich per pagina omdat hij in de thead staat. */
+  body.druk-lijst tr.drukkop { display: table-row !important; }
+  body.druk-lijst tr.drukkop td { border-bottom: 0 !important; padding: 0 0 1mm 0 !important;
+    white-space: normal !important; text-align: left !important; }
+  body.druk-lijst .dk-naam { display: block; font-size: 11pt; font-weight: 600; color: #111; }
+  body.druk-lijst .dk-rest { display: block; font-size: 8.5pt; color: #555; margin-top: 1mm; }
+  body.druk-lijst #tr-lijstvak h2 { font-size: 10pt; margin: 0 0 2mm; }
+  /* `table-layout: auto` met `!important`, want de schermregel `.tr-scroll table.lijst` zet hem op
+     `fixed`. */
+  body.druk-lijst table.lijst { table-layout: auto !important; width: 100%; font-size: 9.5pt;
+    line-height: 3.9mm; }
+  body.druk-lijst table.lijst th:nth-child(1) { width: 15mm; }
+  body.druk-lijst table.lijst.pr-lijst th:nth-child(1) { width: 20mm; }
+  body.druk-lijst table.lijst th:nth-child(2) { width: 11mm; }
+  body.druk-lijst table.lijst th:nth-child(3) { width: 32mm; }
+  body.druk-lijst table.lijst th:nth-child(4) { width: 36mm; }
+  body.druk-lijst table.lijst th:nth-child(5) { width: 48mm; }
+  body.druk-lijst table.lijst th:nth-child(6),
+  body.druk-lijst table.lijst td:nth-child(6) { width: 0; }
+  body.druk-lijst table.lijst th:nth-child(7), body.druk-lijst table.lijst td:nth-child(7) { width: 0; }
+  body.druk-lijst table.lijst th { background: none !important; font-size: 8.5pt; color: #444;
+    padding: 0 2mm 0.8mm; border-bottom: 0.3mm solid #666; }
+  body.druk-lijst table.lijst td { padding: 0 2mm; border-bottom: 0.2mm solid #d9d9d9; }
+  /* Geen zebra op papier: die drukt grijs of valt helemaal weg. */
+  body.druk-lijst table.lijst tbody tr.rij-b td { background: #fff !important; }
+  /* De groepslijn donker in plaats van groen, zodat hij ook in grijstinten staat. */
+  body.druk-lijst table.lijst tbody tr.scheidingsrij td { border-top: 0.2mm solid #c9c9c9;
+    border-bottom: 0.5mm solid #333; padding-top: 0.8mm; color: #333; }
+  body.druk-lijst table.lijst tr.scheidingsrij { break-after: avoid; }
+  /* De lijn "vandaag" hoort niet op papier: die veroudert. */
+  body.druk-lijst table.lijst tr.vandaagrij { display: none !important; }
+  /* Rechts uitgelijnde getallen blijven rechts, ook op papier. */
+  body.druk-lijst table.lijst th:nth-child(1), body.druk-lijst table.lijst td:nth-child(1),
+  body.druk-lijst table.lijst th:nth-child(6), body.druk-lijst table.lijst td:nth-child(6) {
+    text-align: right; }
+  body.druk-lijst table.lijst tr.scheidingsrij td { text-align: left; }
+  /* ---------- De progressielijst als vel papier ---------- */
+  body.druk-lijst #pr-lijstvak, body.druk-lijst #pr-stand-lijsten {
+    display: block !important; overflow: visible !important; height: auto !important;
+    padding: 0 !important; border: 0 !important; background: none !important; page: lijst;
+  }
+  body.druk-lijst #pr-lijstvak h2 { font-size: 10pt; margin: 0 0 2mm; }
+}

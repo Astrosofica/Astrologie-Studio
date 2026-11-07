@@ -1,0 +1,15 @@
+# Wat niet in de bronzip hoort die met een uitgave meegaat (git archive laat deze paden weg).
+# Reden: het ontwikkelverslag, de site en de Qt-proefschil zijn geen bron van het programma.
+# De afdrukken en proefwielen van derden staan niet meer in de repo (T30/T41): die horen nooit bij
+# een uitgave, en een pad dat niet bestaat hoeft hier niet meer geweerd te worden.
+STATUS.md            export-ignore
+ONTWIKKELING.md      export-ignore
+inspiratie/          export-ignore
+site/                export-ignore
+schil-qt/            export-ignore
+bouw/backup-github.sh        export-ignore
+bouw/astrologie-studio-qt.iss   export-ignore
+bouw/astrologie-studio-qt.spec  export-ignore
+bouw/bouw-windows-qt.bat        export-ignore
+bouw/maak-installer-qt.bat      export-ignore
+bouw/draai-uit-bron.bat         export-ignore
